@@ -5,8 +5,11 @@
   "dependencies": {
     "axios": "^0.16.2",
     "bootstrap": "^3.3.7",
+    "moment": "^2.18.1",
     "react": "^16.0.0",
-    "react-dom": "^16.0.0"
+    "react-dom": "^16.0.0",
+    "react-moment": "^0.6.5",
+    "react-number-format": "^2.0.4"
   },
   "devDependencies": {
     "react-scripts": "1.0.14"

@@ -1,13 +1,15 @@
-import React from 'react'
+import React from 'react';
+import Moment from 'react-moment';
+import NumberFormat from 'react-number-format'
 
 const BasketItem = (props) => {
   const item = props.item
 
   return (
     <tr>
-      <td> { item.transaction_date }</td>
+      <td> <Moment format='dddd MMM Do YYYY h:mm A'>{ item.transaction_date }</Moment></td>
       <td> { item.line_items.length }</td>
-      <td> { item.total_cents }</td>
+      <td> <NumberFormat value={ item.total_cents / 100 } displayType={'text'} thousandSeparator={true} prefix={'$'} /></td>
     </tr>
   )
 }

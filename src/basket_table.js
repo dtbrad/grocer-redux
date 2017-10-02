@@ -15,7 +15,7 @@ const BasketTable = (props) => {
         <thead>
           <tr>
             <th>Date</th>
-            <th>Items</th>
+            <th># of Items</th>
             <th>Total</th>
           </tr>
         </thead>
