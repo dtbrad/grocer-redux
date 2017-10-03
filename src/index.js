@@ -37,6 +37,10 @@ class App extends Component {
   }
 
   render() {
+
+    if (this.state.pageOfBaskets.length === 0) {
+        return <h3 className="text-center"> Loading... </h3>
+    };
     return (
       <div className="container">
         <h3 className="text-center">Baskets Table</h3>
