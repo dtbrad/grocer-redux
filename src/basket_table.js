@@ -1,16 +1,13 @@
 import React from 'react';
 import BasketItem from './basket_item'
 
-const BasketTable = (props) => {
+const BasketTable = ({ baskets }) => {
 
-  const baskets = props.baskets.map(basket => {
-			return <BasketItem key={basket.id} item={basket} />;
+  const basketsTable = baskets.map(basket => {
+			return <BasketItem key={basket.id} item={ basket } />;
 		});
 
   return (
-    <div className="panel panel-default">
-      <h4 className="text-center">Basket Table</h4>
-
       <table className="table table-hover">
         <thead>
           <tr>
@@ -20,10 +17,9 @@ const BasketTable = (props) => {
           </tr>
         </thead>
         <tbody>
-          { baskets }
+          { basketsTable }
         </tbody>
       </table>
-    </div>
   )
 };
 
