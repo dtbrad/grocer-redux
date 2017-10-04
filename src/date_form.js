@@ -1,5 +1,6 @@
 import React from 'react';
 import DatePicker from 'react-datepicker';
+import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 
 class DateForm extends React.Component {
@@ -62,6 +63,7 @@ class DateForm extends React.Component {
         <div>
           <div className="col-xs-3" style={{ paddingRight: '15px' }}>
             <DatePicker
+              maxDate={moment().subtract(1, "days")}
               placeholderText="start date"
               selected={this.state.startDate}
               onChange={this.setStart}
@@ -70,6 +72,7 @@ class DateForm extends React.Component {
           </div>
           <div className="col-xs-3"  style={{ paddingLeft: '15px' }}>
             <DatePicker
+              minDate={moment()}
               placeholderText="end date"
               selected={this.state.endDate}
               onChange={this.setEnd}
