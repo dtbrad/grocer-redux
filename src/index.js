@@ -21,7 +21,8 @@ class App extends Component {
       totalBasketsCount: 0,
       perPage: 0,
       currentPage: 0,
-      totalPages: 0
+      totalPages: 0,
+      loaded: false
     };
     this.loadBaskets = this.loadBaskets.bind(this)
     this.changeDate = this.changeDate.bind(this)
@@ -41,6 +42,7 @@ class App extends Component {
         perPage: per_page,
         currentPage: page,
         totalPages: Math.ceil(response.headers["total"] / response.headers["per-page"]),
+        loaded: true
       });
 		});
   }
@@ -52,7 +54,7 @@ class App extends Component {
 
   render() {
 
-    if (this.state.pageOfBaskets.length === 0) {
+    if (this.state.loaded === false) {
         return <h3 className="text-center"> Loading... </h3>
     };
     return (
