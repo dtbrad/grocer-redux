@@ -7,7 +7,7 @@ const BasketItem = (props) => {
   const item = props.item
   return (
     <tr>
-      <td> <Moment add={{ hours: 7 }} format='dddd MMM Do YYYY h:mm A'>{ item.transaction_date }</Moment></td>
+      <td> <Moment add={{ hours: 7 }} format='ddd MM-D-YYYY h:mm a'>{ item.transaction_date }</Moment></td>
       <td> { item.line_items.length }</td>
       <td> <NumberFormat value={ item.total_cents / 100 } displayType={'text'} thousandSeparator={true} prefix={'$'} /></td>
     </tr>
