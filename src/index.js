@@ -24,7 +24,8 @@ class App extends Component {
       currentPage: 0,
       totalPages: 0,
       loaded: false,
-      chartData: null
+      chartData: null,
+      unit: null
     };
     this.loadBaskets = this.loadBaskets.bind(this)
     this.changeDate = this.changeDate.bind(this)
@@ -57,13 +58,12 @@ class App extends Component {
         finish: fin
       }
     }).then(response => {
-      this.setState({chartData: response.data})
+      this.setState({ chartData: response.data.data, unit: response.data.unit })
     });
   };
 
-
-  changeDate(beg, end) {
-    this.setState({beginning: beg._d, finish: end._d})
+  changeDate(beg, end, unit) {
+    this.setState({beginning: beg._d, finish: end._d, unit: unit})
     this.loadBaskets(this.state.perPage, 1, beg._d, end._d)
     this.loadChart(beg._d, end._d)
   };
@@ -75,25 +75,24 @@ class App extends Component {
     };
     return (
       <div className="container">
+        <div className="col-md-12 col-md-offset-0">
 
-          <div className="col-md-12 col-md-offset-0">
-            <SpendingHistory chartData={ this.state.chartData }/>
+          <SpendingHistory chartData={ this.state.chartData } unit= { this.state.unit }/>
 
-            <DateForm changeDate = { this.changeDate }/>
+          <DateForm changeDate = { this.changeDate } unit = { this.state.unit }/>
 
-            <div className="panel panel-default">
-              <BasketTable baskets={ this.state.pageOfBaskets }/>
-            </div>
-
-            <div className="text-center">
-              <Paginate currentPage={ this.state.currentPage } totalPages={this.state.totalPages} beginning= {this.state.beginning} finish={this.state.finish} loadBaskets = { this.loadBaskets }/>
-            </div>
+          <div className="panel panel-default">
+            <BasketTable baskets={ this.state.pageOfBaskets }/>
           </div>
 
+          <div className="text-center">
+            <Paginate currentPage={ this.state.currentPage } totalPages={this.state.totalPages} beginning= {this.state.beginning} finish={this.state.finish} loadBaskets = { this.loadBaskets }/>
+          </div>
+
+        </div>
       </div>
     );
   }
-
 };
 
 ReactDOM.render(<App />, document.getElementById('root'));

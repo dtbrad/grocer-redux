@@ -56,39 +56,39 @@ class DateForm extends React.Component {
   };
 
   render() {
-    return (
-      <div className="content row">
-        <h5 className={this.state.dateOrderError} style={{ paddingLeft: '15px', color: 'red'}}>End date cannot be before start date!</h5>
-        <h5 className={this.state.datePresenceError} style={{ paddingLeft: '15px', color: 'red'}}>Please enter a start and end date!</h5>
-        <div>
-          <div className="col-xs-3" style={{ paddingRight: '15px' }}>
-            <DatePicker
-              maxDate={moment().subtract(1, "days")}
-              placeholderText="start date"
-              selected={this.state.startDate}
-              onChange={this.setStart}
-              className="datepicker form-control"
-            />
-          </div>
-          <div className="col-xs-3"  style={{ paddingLeft: '15px' }}>
-            <DatePicker
-              placeholderText="end date"
-              selected={this.state.endDate}
-              onChange={this.setEnd}
-              className="datepicker form-control"
-            />
-          </div>
-          <div className="col-xs-3"  style={{ paddingRight: '10px' }}>
-            <input className="form-control" placeholder="to be used soon!"/>
-          </div>
-          <div className="col-xs-3 text-right" style={{ paddingRight: '2%' }}>
-            <button className="btn btn-warning btn-block" onClick={ () => this.submitIfDatesPresent() }>Update</button>
-            <br/>
+      return (
+        <div className="content row">
+          <h5 className={this.state.dateOrderError} style={{ paddingLeft: '15px', color: 'red'}}>End date cannot be before start date!</h5>
+          <h5 className={this.state.datePresenceError} style={{ paddingLeft: '15px', color: 'red'}}>Please enter a start and end date!</h5>
+          <div>
+            <div className="col-xs-3" style={{ paddingRight: '15px' }}>
+              <DatePicker
+                maxDate={moment().subtract(1, "days")}
+                placeholderText="start date"
+                selected={this.state.startDate}
+                onChange={this.setStart}
+                className="datepicker form-control"
+              />
+            </div>
+            <div className="col-xs-3"  style={{ paddingLeft: '15px' }}>
+              <DatePicker
+                placeholderText="end date"
+                selected={this.state.endDate}
+                onChange={this.setEnd}
+                className="datepicker form-control"
+              />
+            </div>
+            <div className="col-xs-3"  style={{ paddingRight: '10px' }}>
+              <input className="form-control" placeholder="to be used soon!"/>
+            </div>
+            <div className="col-xs-3 text-right" style={{ paddingRight: '2%' }}>
+              <button className="btn btn-warning btn-block" onClick={ () => this.submitIfDatesPresent() }>Update</button>
+              <br/>
+            </div>
           </div>
         </div>
-      </div>
-    );
+      );
+    };
   };
-};
 
 export default DateForm

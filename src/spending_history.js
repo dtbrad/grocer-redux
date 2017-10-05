@@ -1,12 +1,15 @@
 import React from 'react';
-import Moment from 'react-moment';
-const ReactHighcharts = require('react-highcharts');
+import ReactHighcharts from 'react-highcharts';
+import Highcharts from 'highcharts';
 
-const SpendingHistory = ({chartData}) => {
+const SpendingHistory = ({ chartData, unit }) => {
 
   const formattedData= chartData.map(function(x){
     return [Date.parse(x[0]), x[1]/100]
   });
+
+  const properDateFormat = unit === "month" ? "%B %Y" : "%B %d, %Y"
+  const properDateIntro = (unit === "month" || unit === "day") ? "" : "Week of"
 
   const config = {
     chart: { type: 'spline' },
@@ -15,9 +18,9 @@ const SpendingHistory = ({chartData}) => {
 		},
 		yAxis: {
 			title: {
-				text: 'Amount Spent'
+				text: 'Amount Spent ($)'
 			},
-			labels: { format: '${value}' }
+			labels: { format: '{value}' }
 		},
     xAxis: { type: 'datetime' },
 		series: [{
@@ -26,13 +29,17 @@ const SpendingHistory = ({chartData}) => {
 			       }
     ],
     tooltip: {
-      pointFormat: '${point.y}'
+      formatter: function(){
+        return (
+          properDateIntro + " " + Highcharts.dateFormat(properDateFormat , this.point.x) + " - $" + this.point.y
+        );
+      }
     },
 	  plotOptions: {
 		  series: {
 				events: {
                   click:  function (event) {
-                    // insert navigate-to-selected-time-period here later
+                    // insert navigate-to-selected-time-period logic here later
                   },
                   legendItemClick: function () {
                     return false;
