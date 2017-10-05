@@ -7,6 +7,7 @@ import './index.css';
 import BasketTable from './basket_table'
 import Paginate from './paginate'
 import DateForm from './date_form'
+import SpendingHistory from './spending_history'
 
 const URL = process.env.REACT_APP_URL;
 
@@ -22,14 +23,16 @@ class App extends Component {
       perPage: 0,
       currentPage: 0,
       totalPages: 0,
-      loaded: false
+      loaded: false,
+      chartData: null
     };
     this.loadBaskets = this.loadBaskets.bind(this)
     this.changeDate = this.changeDate.bind(this)
     this.loadBaskets(10, 1);
-    };
+    this.loadChart()
+  };
 
-    loadBaskets(per_page, page, beg=null, fin=null) {
+  loadBaskets(per_page, page, beg=null, fin=null) {
     axios.get(`${URL}/baskets?per_page=${per_page}&page=${page}`, {
       params: {
         beginning: beg,
@@ -47,9 +50,22 @@ class App extends Component {
 		});
   }
 
+  loadChart(beg=null, fin=null) {
+    axios.get(`${URL}/spending_history`, {
+      params: {
+        beginning: beg,
+        finish: fin
+      }
+    }).then(response => {
+      this.setState({chartData: response.data})
+    });
+  };
+
+
   changeDate(beg, end) {
     this.setState({beginning: beg._d, finish: end._d})
     this.loadBaskets(this.state.perPage, 1, beg._d, end._d)
+    this.loadChart(beg._d, end._d)
   };
 
   render() {
@@ -59,20 +75,21 @@ class App extends Component {
     };
     return (
       <div className="container">
-      <div className="row">
-  <div className="col-md-8 col-md-offset-2">
-        <h3 className="text-center">Baskets Table</h3>
-        <div className="panel panel-default">
-          <br/>
+
+          <div className="col-md-12 col-md-offset-0">
+            <SpendingHistory chartData={ this.state.chartData }/>
+
             <DateForm changeDate = { this.changeDate }/>
-          <br/>
-          <BasketTable baskets={ this.state.pageOfBaskets }/>
-        </div>
-        <div className="text-center">
-          <Paginate currentPage={ this.state.currentPage } totalPages={this.state.totalPages} beginning= {this.state.beginning} finish={this.state.finish} loadBaskets = { this.loadBaskets }/>
-        </div>
-        </div>
-        </div>
+
+            <div className="panel panel-default">
+              <BasketTable baskets={ this.state.pageOfBaskets }/>
+            </div>
+
+            <div className="text-center">
+              <Paginate currentPage={ this.state.currentPage } totalPages={this.state.totalPages} beginning= {this.state.beginning} finish={this.state.finish} loadBaskets = { this.loadBaskets }/>
+            </div>
+          </div>
+
       </div>
     );
   }

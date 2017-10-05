@@ -57,7 +57,7 @@ class DateForm extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="content row">
         <h5 className={this.state.dateOrderError} style={{ paddingLeft: '15px', color: 'red'}}>End date cannot be before start date!</h5>
         <h5 className={this.state.datePresenceError} style={{ paddingLeft: '15px', color: 'red'}}>Please enter a start and end date!</h5>
         <div>
@@ -72,7 +72,6 @@ class DateForm extends React.Component {
           </div>
           <div className="col-xs-3"  style={{ paddingLeft: '15px' }}>
             <DatePicker
-              minDate={moment()}
               placeholderText="end date"
               selected={this.state.endDate}
               onChange={this.setEnd}
