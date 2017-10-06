@@ -7,8 +7,9 @@ class DateForm extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      startDate: null,
-      endDate: null,
+      startDate: moment(props.start_date),
+      endDate: moment(props.end_date),
+      unit: props.unit,
       dateOrderError: "hidden",
       datePresenceError: "hidden"
     };
@@ -35,6 +36,11 @@ class DateForm extends React.Component {
 
   };
 
+  handleSelect(){
+    var newUnit = this.refs.unitSelector.value
+    this.setState({unit: newUnit});
+  };
+
   validateDateOrder(date) {
     var stateBeginning = this.state.startDate ? this.state.startDate._d : null
     var stateFinish = this.state.endDate ? this.state.endDate._d : null
@@ -48,7 +54,7 @@ class DateForm extends React.Component {
   submitIfDatesPresent(){
     if (this.state.startDate && this.state.endDate) {
       this.setState({ datePresenceError: "hidden" });
-      this.props.changeDate(this.state.startDate, this.state.endDate)
+      this.props.changeDate(this.state.startDate, this.state.endDate, this.state.unit)
     }
     else {
       this.setState({datePresenceError: "", dateOrderError: "hidden"});
@@ -79,7 +85,11 @@ class DateForm extends React.Component {
               />
             </div>
             <div className="col-xs-3"  style={{ paddingRight: '10px' }}>
-              <input className="form-control" placeholder="to be used soon!"/>
+              <select ref = "unitSelector" className="form-control" onChange={(e) => {this.handleSelect()} } value={this.state.unit}>
+              <option value="day">Day</option>
+              <option value="week">Week</option>
+              <option value="month">Month</option>
+              </select>
             </div>
             <div className="col-xs-3 text-right" style={{ paddingRight: '2%' }}>
               <button className="btn btn-warning btn-block" onClick={ () => this.submitIfDatesPresent() }>Update</button>

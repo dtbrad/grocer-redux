@@ -8,11 +8,11 @@ const Paginate = ({ currentPage, totalPages, loadBaskets, beginning, finish }) =
 
   return (
       <div className="btn-group">
-        <button className={ previous } onClick={() => loadBaskets(10, 1, beginning, finish)}>1</button>
-        <button className={ previous } onClick={() => loadBaskets(10, (currentPage - 1), beginning, finish )}>Prev</button>
+        <button className={ previous } onClick={() => loadBaskets({per_page: 10, page: 1, beg: beginning, fin: finish})}>1</button>
+        <button className={ previous } onClick={() => loadBaskets({per_page: 10, page: (currentPage - 1), beg: beginning, fin: finish} )}>Prev</button>
         <button className="btn btn-secondary">{ currentPage }</button>
-        <button className={ next } onClick={() => loadBaskets(10, (currentPage + 1), beginning, finish)}>Next</button>
-        <button className={ last } onClick={() => loadBaskets(10, totalPages, beginning, finish)}>{ totalPages }</button>
+        <button className={ next } onClick={() => loadBaskets({per_page: 10, page: (currentPage + 1), beg: beginning, fin: finish})}>Next</button>
+        <button className={ last } onClick={() => loadBaskets({per_page: 10, page: totalPages, beg: beginning, fin: finish})}>{ totalPages }</button>
       </div>
   )
 }

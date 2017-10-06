@@ -8,7 +8,6 @@ import BasketTable from './basket_table'
 import Paginate from './paginate'
 import DateForm from './date_form'
 import SpendingHistory from './spending_history'
-
 const URL = process.env.REACT_APP_URL;
 
 class App extends Component {
@@ -29,43 +28,61 @@ class App extends Component {
     };
     this.loadBaskets = this.loadBaskets.bind(this)
     this.changeDate = this.changeDate.bind(this)
-    this.loadBaskets(10, 1);
-    this.loadChart()
   };
 
-  loadBaskets(per_page, page, beg=null, fin=null) {
-    axios.get(`${URL}/baskets?per_page=${per_page}&page=${page}`, {
+  componentDidMount() {
+    this.loadBaskets({per_page: 10, page: 1});
+    this.retrieveChartData()
+	}
+
+  loadBaskets(args) {
+    args = args || {}
+    args.per_page = args.per_page || null
+    args.page = args.page || null
+    args.beg = args.beg || null
+    args.fin = args.fin || null
+    axios.get(`${URL}/baskets?per_page=${args.per_page}&page=${args.page}`, {
       params: {
-        beginning: beg,
-        finish: fin
+        beginning: args.beg,
+        finish: args.fin
       }
     }).then(response => {
 			this.setState({
-        pageOfBaskets: response.data,
+        pageOfBaskets: response.data.baskets_array.b,
         totalBasketsCount: response.headers["total"],
-        perPage: per_page,
-        currentPage: page,
+        beginning: response.data.first_date,
+        finish: response.data.last_date,
+        perPage: args.per_page,
+        currentPage: args.page,
         totalPages: Math.ceil(response.headers["total"] / response.headers["per-page"]),
         loaded: true
       });
 		});
   }
 
-  loadChart(beg=null, fin=null) {
+  retrieveChartData(args) {
+    args = args || {}
+    args.beg = args.beg || null
+    args.fin = args.fin || null
+    args.unit = args.unit || null
     axios.get(`${URL}/spending_history`, {
       params: {
-        beginning: beg,
-        finish: fin
+        beginning: args.beg,
+        finish: args.fin,
+        unit: args.unit
       }
     }).then(response => {
-      this.setState({ chartData: response.data.data, unit: response.data.unit })
+      const dateArray = response.data.data
+      this.setState({ chartData: dateArray,
+                      unit: response.data.unit,
+                    })
     });
   };
 
   changeDate(beg, end, unit) {
     this.setState({beginning: beg._d, finish: end._d, unit: unit})
-    this.loadBaskets(this.state.perPage, 1, beg._d, end._d)
-    this.loadChart(beg._d, end._d)
+    this.loadBaskets({per_page: 10, page: 1, beg: beg._d, fin: end._d})
+    this.retrieveChartData({beg: beg._d, fin: end._d, unit: unit} )
   };
 
   render() {
@@ -76,10 +93,9 @@ class App extends Component {
     return (
       <div className="container">
         <div className="col-md-12 col-md-offset-0">
-
           <SpendingHistory chartData={ this.state.chartData } unit= { this.state.unit }/>
 
-          <DateForm changeDate = { this.changeDate } unit = { this.state.unit }/>
+          <DateForm changeDate ={ this.changeDate } start_date={ this.state.beginning } end_date={ this.state.finish } unit = { this.state.unit }/>
 
           <div className="panel panel-default">
             <BasketTable baskets={ this.state.pageOfBaskets }/>
