@@ -1,14 +1,11 @@
 import React from 'react';
 import ReactHighcharts from 'react-highcharts';
+const deepEqual = require('deep-equal');
 
 class SpendingHistory extends React.Component {
 
   shouldComponentUpdate(nextProps, nextState) {
-    if (this.props.chartData !== nextProps.chartData || this.props.unit !== nextProps.unit ) {
-      return true
-    }
-    else { return false}
-
+    if (!deepEqual(this.props, nextProps)) { return true } else { return false }
   }
 
   render() {

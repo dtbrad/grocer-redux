@@ -5,6 +5,7 @@
   "dependencies": {
     "axios": "^0.16.2",
     "bootstrap": "^3.3.7",
+    "deep-equal": "^1.0.1",
     "highcharts": "^6.0.0",
     "moment": "^2.18.1",
     "react": "^16.0.0",

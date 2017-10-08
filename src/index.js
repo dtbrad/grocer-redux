@@ -8,6 +8,7 @@ import BasketTable from './basket_table'
 import Paginate from './paginate'
 import DateForm from './date_form'
 import SpendingHistory from './spending_history'
+
 const URL = process.env.REACT_APP_URL;
 
 class App extends Component {
@@ -15,74 +16,74 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      beginning: null,
-      finish: null,
+      newest_date: null,
+      oldest_date: null,
       pageOfBaskets: [],
       totalBasketsCount: 0,
-      perPage: 0,
-      currentPage: 0,
+      perPage: 10,
+      currentPage: 1,
       totalPages: 0,
       loaded: false,
       chartData: null,
-      unit: null
+      unit: null,
+      sortCategory: "sort_date",
+      desc: true
     };
     this.loadBaskets = this.loadBaskets.bind(this)
     this.changeDate = this.changeDate.bind(this)
+    this.resort = this.resort.bind(this)
+    this.updatePagination = this.updatePagination.bind(this)
   };
 
   componentDidMount() {
-    this.loadBaskets({per_page: 10, page: 1});
-    this.retrieveChartData()
+    this.loadBaskets({per_page: this.state.perPage, page: this.state.currentPage, category: this.state.sortCategory, desc: this.state.desc});
 	}
+
+  resort(cat) {
+    const val = !this.state.desc
+    this.loadBaskets({per_page: this.state.perPage, page: 1, category: cat, desc: val})
+  }
+
+  updatePagination(args) {
+    this.loadBaskets({per_page: this.state.perPage, page: args.page, category: this.state.sortCategory, desc: this.state.desc, chartData: this.state.chartData, unit: this.state.unit, newest_date: this.state.newest_date, oldest_date: this.state.oldest_date, })
+  };
 
   loadBaskets(args) {
     args = args || {}
-    args.per_page = args.per_page || null
-    args.page = args.page || null
-    args.beg = args.beg || null
-    args.fin = args.fin || null
-    axios.get(`${URL}/baskets?per_page=${args.per_page}&page=${args.page}`, {
+    args.direction = args.desc === true ? "desc" : "asc"
+    axios.get(`${URL}/baskets?per_page=${args.per_page || null}&page=${args.page || null}`, {
       params: {
-        beginning: args.beg,
-        finish: args.fin
+        newest_date: args.newest_date || null,
+        oldest_date: args.oldest_date || null,
+        category: args.category || null,
+        direction: args.direction || null,
+        unit: args.unit || null
       }
     }).then(response => {
 			this.setState({
         pageOfBaskets: response.data.baskets_array.b,
         totalBasketsCount: response.headers["total"],
-        beginning: response.data.first_date,
-        finish: response.data.last_date,
+        newest_date: response.data.newest_date,
+        oldest_date: response.data.oldest_date,
         perPage: args.per_page,
         currentPage: args.page,
         totalPages: Math.ceil(response.headers["total"] / response.headers["per-page"]),
-        loaded: true
+        loaded: true,
+        chartData: response.data.chart_array.data,
+        unit: response.data.chart_array.unit,
+        desc: response.data.dir === "desc" ? true : false
+
       });
 		});
   }
 
-  retrieveChartData(args) {
-    args = args || {}
-    args.beg = args.beg || null
-    args.fin = args.fin || null
-    args.unit = args.unit || null
-    axios.get(`${URL}/spending_history`, {
-      params: {
-        beginning: args.beg,
-        finish: args.fin,
-        unit: args.unit
+  changeDate(args) {
+      if (this.state.newest_date === args.newest_date._i && this.state.oldest_date === args.oldest_date._i) {
+        args.page = this.state.currentPage
       }
-    }).then(response => {
-      const dateArray = response.data.data
-      this.setState({ chartData: dateArray,
-                      unit: response.data.unit,
-                    })
-    });
-  };
-
-  changeDate(beg, end, unit) {
-    this.setState({beginning: beg._d, finish: end._d, unit: unit})
-    this.loadBaskets({per_page: 10, page: 1, beg: beg._d, fin: end._d})
-    this.retrieveChartData({beg: beg._d, fin: end._d, unit: unit} )
+      else {
+        args.page = 1};
+      this.loadBaskets( {per_page: 10, page: args.page, newest_date: args.newest_date, oldest_date: args.oldest_date, unit: args.unit, desc: this.state.desc})
   };
 
   render() {
@@ -94,17 +95,13 @@ class App extends Component {
       <div className="container">
         <div className="col-md-12 col-md-offset-0">
           <SpendingHistory chartData={ this.state.chartData } unit= { this.state.unit }/>
-
-          <DateForm changeDate ={ this.changeDate } start_date={ this.state.beginning } end_date={ this.state.finish } unit = { this.state.unit }/>
-
+          <DateForm changeDate ={ this.changeDate } oldest_date={ this.state.oldest_date } newest_date={ this.state.newest_date } unit = { this.state.unit }/>
           <div className="panel panel-default">
-            <BasketTable baskets={ this.state.pageOfBaskets }/>
+            <BasketTable baskets={ this.state.pageOfBaskets } resort = { this.resort }/>
           </div>
-
           <div className="text-center">
-            <Paginate currentPage={ this.state.currentPage } totalPages={this.state.totalPages} beginning= {this.state.beginning} finish={this.state.finish} loadBaskets = { this.loadBaskets }/>
+            <Paginate currentPage={ this.state.currentPage } totalPages={this.state.totalPages} updatePagination = { this.updatePagination } desc = { this.state.desc } newest_date = {this.state.newest_date} oldest_date = { this.state.oldest_date }/>
           </div>
-
         </div>
       </div>
     );

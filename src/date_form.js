@@ -7,20 +7,20 @@ class DateForm extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
-      startDate: moment(props.start_date),
-      endDate: moment(props.end_date),
+      oldest_date: moment(props.oldest_date),
+      newest_date: moment(props.newest_date),
       unit: props.unit,
       missingDates: false,
       outOfOrder: false,
       tooShortforMonth: false,
       tooShortforWeek: false };
-    this.setStart = this.setStart.bind(this);
-    this.setEnd = this.setEnd.bind(this);
+    this.setOldest = this.setOldest.bind(this);
+    this.setNewest = this.setNewest.bind(this);
   }
 
   correctUnitforRange(){
-    var s = this.state.startDate
-    var e = this.state.endDate
+    var s = this.state.oldest_date
+    var e = this.state.newest_date
     var diff = e.diff(s, 'days');
     if ((diff < 15) && (this.state.unit !== "day")) {
       this.setState({ tooShortforWeek: true, tooShortforMonth: false })
@@ -35,8 +35,8 @@ class DateForm extends React.Component {
 
 
   checkErrors() {
-    var stateBeginning = this.state.startDate ? this.state.startDate._d : null
-    var stateFinish = this.state.endDate ? this.state.endDate._d : null
+    var stateBeginning = this.state.oldest_date ? this.state.oldest_date._d : null
+    var stateFinish = this.state.newest_date ? this.state.newest_date._d : null
     if (stateBeginning === null || stateFinish === null) {
       this.setState({ missingDates: true, outOfOrder: false });
     }
@@ -48,12 +48,12 @@ class DateForm extends React.Component {
     }
   }
 
-  setStart(date) {
-    this.setState({ startDate: date }, this.checkErrors);
+  setOldest(date) {
+    this.setState({ oldest_date: date }, function(){ this.checkErrors()});
   };
 
-  setEnd(date) {
-    this.setState({ endDate: date }, this.checkErrors);
+  setNewest(date) {
+    this.setState({ newest_date: date }, function(){ this.checkErrors()});
   };
 
   handleSelect(){
@@ -66,7 +66,7 @@ class DateForm extends React.Component {
       alert("Fix your date range before submitting")
     }
     else {
-      this.props.changeDate(this.state.startDate, this.state.endDate, this.state.unit)
+      this.props.changeDate({newest_date: this.state.newest_date, oldest_date: this.state.oldest_date, unit: this.state.unit})
     }
   };
 
@@ -80,18 +80,18 @@ class DateForm extends React.Component {
           <div>
             <div className="col-xs-3" style={{ paddingRight: '15px' }}>
               <DatePicker
-                maxDate={moment().subtract(1, "days")}
                 placeholderText="start date"
-                selected={this.state.startDate}
-                onChange={this.setStart}
+                selected={this.state.oldest_date}
+                onChange={this.setOldest}
                 className="datepicker form-control"
               />
             </div>
             <div className="col-xs-3"  style={{ paddingLeft: '15px' }}>
               <DatePicker
+                maxDate={moment().subtract(1, "days")}
                 placeholderText="end date"
-                selected={this.state.endDate}
-                onChange={this.setEnd}
+                selected={this.state.newest_date}
+                onChange={this.setNewest}
                 className="datepicker form-control"
               />
             </div>
