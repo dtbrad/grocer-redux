@@ -17,6 +17,9 @@
     "react-number-format": "^2.0.4"
   },
   "devDependencies": {
+    "eslint": "^4.8.0",
+    "eslint-config-airbnb-base": "^12.0.2",
+    "eslint-plugin-import": "^2.7.0",
     "react-scripts": "1.0.14"
   },
   "scripts": {

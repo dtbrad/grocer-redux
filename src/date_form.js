@@ -62,12 +62,22 @@ class DateForm extends React.Component {
   };
 
   submitIfDatesPresent(){
-    if (this.state.missingDates === true || this.state.outOfOrder === true || this.state.tooShortforMonth === true || this.state.tooShortforWeek === true) {
+    const deepEqual = require('deep-equal');
+    let oldest_date = null;
+    let newest_date = null;
+
+    if(this.state.missingDates === true || this.state.outOfOrder === true || this.state.tooShortforMonth === true || this.state.tooShortforWeek === true) {
       alert("Fix your date range before submitting")
     }
     else {
-      this.props.changeDate({newest_date: this.state.newest_date, oldest_date: this.state.oldest_date, unit: this.state.unit})
-    }
+      if(deepEqual(this.state.oldest_date, this.props.oldest_date) && deepEqual(this.state.newest_date, this.props.newest_date)) {
+        [oldest_date, newest_date] =[null, null]
+      }
+      else {
+        [oldest_date, newest_date] =[this.state.oldest_date, this.state.newest_date]
+      };
+      this.props.changeDate({newest_date: newest_date, oldest_date: oldest_date, unit: this.state.unit})
+    };
   };
 
   render() {
