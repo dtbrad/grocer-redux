@@ -18,6 +18,14 @@ class DateForm extends React.Component {
     this.setNewest = this.setNewest.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      oldest_date: moment(nextProps.oldest_date),
+      newest_date: moment(nextProps.newest_date),
+      unit: nextProps.unit
+    });
+  }
+
   correctUnitforRange(){
     var s = this.state.oldest_date
     var e = this.state.newest_date
@@ -32,7 +40,6 @@ class DateForm extends React.Component {
       this.setState({ tooShortforMonth: false, tooShortforWeek: false })
     }
   };
-
 
   checkErrors() {
     var stateBeginning = this.state.oldest_date ? this.state.oldest_date._d : null
@@ -71,12 +78,13 @@ class DateForm extends React.Component {
     }
     else {
       if(deepEqual(this.state.oldest_date, this.props.oldest_date) && deepEqual(this.state.newest_date, this.props.newest_date)) {
-        [oldest_date, newest_date] =[null, null]
+        [oldest_date, newest_date] =[null, null];
+        this.props.loadChart({unit: this.state.unit});
       }
       else {
-        [oldest_date, newest_date] =[this.state.oldest_date, this.state.newest_date]
+        [oldest_date, newest_date] =[this.state.oldest_date, this.state.newest_date];
+        this.props.loadChartAndTable({newest_date: newest_date, oldest_date: oldest_date, unit: this.state.unit})
       };
-      this.props.changeDate({newest_date: newest_date, oldest_date: oldest_date, unit: this.state.unit})
     };
   };
 
