@@ -1,10 +1,10 @@
 import React from 'react';
-import BasketItem from './basket_item'
+import BasketsTableRow from './baskets_table_row'
 
 const BasketsTable = ({baskets, desc, loadTable}) => {
 
   const basketsTableContent = baskets.map(basket => {
-			return <BasketItem key={basket.id} item={ basket } />;
+			return <BasketsTableRow key={basket.id} basket={ basket } />;
 		});
 
   return (

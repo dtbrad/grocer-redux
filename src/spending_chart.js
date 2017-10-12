@@ -4,7 +4,7 @@ import moment from 'moment';
 
 const deepEqual = require('deep-equal');
 
-class SpendingHistory extends React.Component {
+class SpendingChart extends React.Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     if (!deepEqual(this.props, nextProps)) { return true } else { return false }
@@ -82,4 +82,4 @@ class SpendingHistory extends React.Component {
   };
 };
 
-export default SpendingHistory;
+export default SpendingChart;
