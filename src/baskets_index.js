@@ -92,8 +92,7 @@ class BasketsIndex extends Component {
       return <h3 className="text-center"> Loading... </h3>;
     }
     return (
-      <div className="container">
-        <div className="col-md-10 col-md-offset-1">
+      <div>
           <SpendingChart
             chartData={this.state.chartData}
             unit={this.state.unit}
@@ -121,8 +120,7 @@ class BasketsIndex extends Component {
               desc={this.state.desc}
             />
           </div>
-        </div>
-      </div>
+          </div>
     );
   }
 }
