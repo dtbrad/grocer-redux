@@ -6,8 +6,9 @@ const deepEqual = require('deep-equal');
 
 class SpendingChart extends React.Component {
 
+
   shouldComponentUpdate(nextProps, nextState) {
-    if (!deepEqual(this.props, nextProps)) { return true } else { return false }
+    return !deepEqual(this.props, nextProps)
   }
 
   prepRangeforLoad(timestamp) {

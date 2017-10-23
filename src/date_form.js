@@ -26,11 +26,10 @@ class DateForm extends React.Component {
     });
   }
 
-  correctUnitforRange(){
-    var s = this.state.oldest_date
-    var e = this.state.newest_date
-    var diff = e.diff(s, 'days');
-    if ((diff < 15) && (this.state.unit !== "day")) {
+  correctUnitforRange() {
+    const { oldest_date, newest_date, unit } = this.state
+    var diff = newest_date.diff(oldest_date, 'days');
+    if ((diff < 15) && (unit !== "day")) {
       this.setState({ tooShortforWeek: true, tooShortforMonth: false })
     }
     else if (diff < 30 && this.state.unit === "month") {
@@ -114,7 +113,7 @@ class DateForm extends React.Component {
               />
             </div>
             <div className="col-xs-3"  style={{ paddingRight: '10px' }}>
-              <select ref = "unitSelector" className="form-control" onChange={(e) => {this.handleSelect()} } value={this.state.unit}>
+              <select ref = "unitSelector" className="form-control" onChange={() => {this.handleSelect()} } value={this.state.unit}>
               <option value="day">Day</option>
               <option value="week">Week</option>
               <option value="month">Month</option>
