@@ -20,7 +20,7 @@ class BasketsIndex extends Component {
       desc: true,
       loaded: false,
       newest_date: moment('2017-09-25'),
-      oldest_date: moment('2015-11-22'),
+      oldest_date: moment('2015-11-23'),
       pageOfBaskets: [],
       perPage: 10,
       sortCategory: 'sort_date',
@@ -33,7 +33,7 @@ class BasketsIndex extends Component {
   }
 
   componentDidMount() {
-    this.loadChartAndTable({desc: true});
+    this.loadChartAndTable({desc: true, user_id: this.props.user_id });
   };
 
   loadChartAndTable(args) {
@@ -43,13 +43,31 @@ class BasketsIndex extends Component {
   }
 
   loadChart(args) {
-    axios.get(`${URL}/spending_history`, {
-      params: {
-        newest_date: args.newest_date == null ? this.state.newest_date : args.newest_date,
-        oldest_date: args.oldest_date == null ? this.state.oldest_date : args.oldest_date,
-        unit: args.unit || null
-      }
-    }).then(response => {
+    let token
+    let headers
+
+    if(localStorage.getItem("userInfo") !== null) {
+       token = JSON.parse(localStorage.getItem('userInfo')).token
+       headers = {
+              'Content-Type': 'application/json',
+              'Authorization': token
+       }
+    }
+
+    const params = {
+      user_id: args.user_id || null,
+      newest_date: args.newest_date == null ? this.state.newest_date : args.newest_date,
+      oldest_date: args.oldest_date == null ? this.state.oldest_date : args.oldest_date,
+      unit: args.unit || null
+    };
+
+    axios({
+      method: 'get',
+      url: `${URL}/spending_history`,
+      params: params,
+      headers: headers
+    })
+    .then(response => {
       const dateArray = response.data.data
       this.setState({ chartData: dateArray,
                       unit: response.data.unit,
@@ -58,8 +76,20 @@ class BasketsIndex extends Component {
   };
 
   loadTable(args) {
+    let token
+    let headers
+
+    if(localStorage.getItem("userInfo") !== null) {
+       token = JSON.parse(localStorage.getItem('userInfo')).token
+       headers = {
+              'Content-Type': 'application/json',
+              'Authorization': token
+          }
+    }
+
     const direction = args.desc === true ? 'desc' : 'asc';
     const params = {
+      user_id: args.user_id || null,
       category: args.category || null,
       direction: direction || null,
       newest_date: args.newest_date == null ? this.state.newest_date : args.newest_date,
@@ -67,9 +97,13 @@ class BasketsIndex extends Component {
       page: args.page || null,
       per_page: args.per_page || this.state.perPage
     };
-    axios
-      .get(
-        `${URL}/baskets`, { params })
+
+    axios({
+      method: 'get',
+      url: `${URL}/baskets`,
+      params: params,
+      headers: headers
+    })
       .then((response) => {
         this.setState(function(prevState){
           return {
@@ -91,8 +125,11 @@ class BasketsIndex extends Component {
     if (this.state.loaded === false) {
       return <h3 className="text-center"> Loading... </h3>;
     }
+    const guestMessage = this.props.authenticated === false ? <div className="alert alert-danger text-center">Not Logged In - Viewing Sample Data</div> : null;
+
     return (
       <div>
+          { guestMessage }
           <SpendingChart
             chartData={this.state.chartData}
             unit={this.state.unit}

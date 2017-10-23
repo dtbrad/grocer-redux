@@ -12,7 +12,7 @@ const Header = (props) => {
         </NavDropdown>
       )
     }
-    else { return <li><Link to={ '/login' }>Login</Link></li> }
+    else { return <NavItem><Link to={ '/login' }>Login</Link></NavItem> }
   }
 
   return (
