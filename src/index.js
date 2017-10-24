@@ -4,8 +4,8 @@ import { HashRouter, Route, Switch, Redirect } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
 import './index.css';
-import BasketsIndex from './baskets_index'
-import BasketsShowContainer from './baskets_show_container'
+import BasketsIndex from './baskets_index/baskets_index'
+import BasketsShowContainer from './baskets_show/baskets_show_container'
 import Header from './header';
 import Login from './login';
 import axios from 'axios';

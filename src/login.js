@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-// import { login } from './auth_service'
-
 
 export default class Login extends Component {
   constructor(props) {

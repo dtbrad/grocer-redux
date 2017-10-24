@@ -3,7 +3,6 @@ import axios from 'axios';
 import moment from 'moment';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
-import './index.css';
 import BasketsTable from './baskets_table';
 import Paginate from './paginate';
 import DateForm from './date_form';
