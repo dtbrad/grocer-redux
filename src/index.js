@@ -97,7 +97,6 @@ class Index extends Component {
 
 
   render(){
-
     const MainLayout = () => {
       return (
         <div>
@@ -110,8 +109,6 @@ class Index extends Component {
               <Switch>
                 <Route path="/baskets/:id" exact component={BasketsShowContainer} />
                 <Route path="/baskets" render={ () => <BasketsIndex authenticated={ this.state.authenticated} user_id = {this.state.user_id } token = { this.token }/> }/>
-                <Route path="/login" render={ () => <Login login={this.login} /> }/>
-                <Route exact path="/" render={() => (<Redirect to="/baskets"/>)}/>
               </Switch>
             </div>
           </HashRouter>
