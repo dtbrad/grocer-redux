@@ -12,7 +12,7 @@ const Paginate = ({ currentPage, totalPages, loadTable, desc }) => {
     <div className="btn-group">
       <button className={ previous } onClick={ () => loadTable({page: 1, desc: desc}) }>1</button>
       <button className={ previous } onClick={ () => loadTable({page: (currentPage - 1), desc: desc}) }>Prev</button>
-      <button className="btn btn-secondary">{ currentPage }</button>
+      <button className="btn btn-primary">{ currentPage }</button>
       <button className={ next } onClick={ () => loadTable({page: (currentPage + 1), desc: desc}) }>Next</button>
       <button className={ last } onClick={ () => loadTable({page: totalPages, desc: desc}) }>{ totalPages }</button>
     </div> )

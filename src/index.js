@@ -9,6 +9,7 @@ import BasketsShowContainer from './baskets_show/baskets_show_container'
 import Header from './header';
 import Login from './login';
 import Welcome from './welcome';
+import Footer from './footer';
 import axios from 'axios';
 const URL = process.env.REACT_APP_URL;
 
@@ -120,7 +121,6 @@ class Index extends Component {
     };
 
     return (
-      <div>
         <div className="container">
           <div className="col-md-10 col-md-offset-1">
           <br/>
@@ -151,7 +151,7 @@ class Index extends Component {
                 </Switch>
             </HashRouter>
             </div>
-            </div>
+            <Footer />
             </div>
         );
   };

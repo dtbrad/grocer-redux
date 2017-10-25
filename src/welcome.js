@@ -1,10 +1,9 @@
 import React from 'react';
-import { Match, propTypes, HashRouter, Route, Switch, Redirect, Link } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
+import { HashRouter, Route, Link } from 'react-router-dom';
 import BasketsIndex from './baskets_index/baskets_index'
 
 
-const Welcome = (props) => {
+const Welcome = () => {
 
   let router;
 
