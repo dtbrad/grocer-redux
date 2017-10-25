@@ -15,6 +15,10 @@ const Header = (props) => {
     else { return <NavItem><Link to={ '/login' }>Login</Link></NavItem> }
   }
 
+  if( props.hideNav === true )
+
+  { return null }
+
   return (
     <HashRouter>
 

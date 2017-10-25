@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { HashRouter, Link } from 'react-router-dom';
 
 export default class Login extends Component {
   constructor(props) {
@@ -32,32 +33,37 @@ export default class Login extends Component {
 
   render() {
     return (
-      <div className="col-md-6 col-md-offset-3 panel panel-default devise-bs">
+      <div className="col-md-6 col-md-offset-3">
         <br/>
-        <h4 className="text-center">Log In</h4>
-        <div className="panel-body">
-
-          <form onSubmit={this.handleSubmit}>
-            <div className="form-group">
-              <label>Email</label>
-              <input className="form-control"
+        <div className="panel panel-default">
+          <br/>
+          <div>
+            <h4 className="text-center">Log In</h4>
+            <div className="panel-body">
+              <form onSubmit={this.handleSubmit}>
+                <div className="form-group">
+                  <label>Email</label>
+                  <input className="form-control"
                      value={this.state.email }
                      ref={(ref) => {this.input = ref}}
                      type="email"
                      onChange={event => this.handleChange(event.target)}
-              />
-            </div>
-            <div className="form-group">
-              <label>Password</label>
-              <input className="form-control"
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Password</label>
+                  <input className="form-control"
                      type="password"
                      ref={(ref) => {this.input = ref}}
                      onChange={event => this.handleChange(event.target)}
-                     />
+                  />
+                </div>
+                <input type="submit" className="btn btn-primary btn-block"/>
+              </form>
             </div>
-            <input type="submit" className="btn btn-primary btn-block"/>
-          </form>
+          </div>
         </div>
+        <div className="text-center"><Link to={ '/welcome' }>Back to Home Page</Link></div>
       </div>
     );
   }

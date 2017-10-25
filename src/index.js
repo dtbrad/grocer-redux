@@ -8,6 +8,7 @@ import BasketsIndex from './baskets_index/baskets_index'
 import BasketsShowContainer from './baskets_show/baskets_show_container'
 import Header from './header';
 import Login from './login';
+import Welcome from './welcome';
 import axios from 'axios';
 const URL = process.env.REACT_APP_URL;
 
@@ -48,7 +49,7 @@ class Index extends Component {
 
   logout(){
     localStorage.removeItem("userInfo");
-    this.router.history.push('/');
+    this.router.history.push('/welcome');
 
     this.setState({
         authenticated: false,
@@ -92,36 +93,67 @@ class Index extends Component {
     localStorage.setItem('userInfo', JSON.stringify(userInfo));
   };
 
+
+
   render(){
+
+    const MainLayout = () => {
+      return (
+        <div>
+        <Header logout = { this.logout } user_name = { this.state.user_name } isAuthenticated = { this.state.authenticated }/>
+        <br/>
+        <div>
+          <HashRouter ref={r => this.router = r}>
+            <div>
+              <br/>
+              <Switch>
+                <Route path="/baskets/:id" exact component={BasketsShowContainer} />
+                <Route path="/baskets" render={ () => <BasketsIndex authenticated={ this.state.authenticated} user_id = {this.state.user_id } token = { this.token }/> }/>
+                <Route path="/login" render={ () => <Login login={this.login} /> }/>
+                <Route exact path="/" render={() => (<Redirect to="/baskets"/>)}/>
+              </Switch>
+            </div>
+          </HashRouter>
+        </div>
+        </div>
+      )
+    };
+
     return (
       <div>
         <div className="container">
           <div className="col-md-10 col-md-offset-1">
           <br/>
-            <div className= "alert alert-info text-center">
-              <p>three demo accounts:  sample@mail.com (same data that a guest sees), user_one@mail.com, and user_two@mail.com</p>
-              <p> - all have the same password: 'password' - </p>
+            <div className= "alert alert-info">
+              <p> Note to user: three demo accounts:  sample@mail.com (same data that a guest sees), user_one@mail.com, and user_two@mail.com. All have the same password: "password" </p>
             </div>
-            <h1 className="text-center">GROCER<small> purchase tracking for New Season Market shoppers</small></h1>
-            <Header logout = { this.logout } user_name = { this.state.user_name } isAuthenticated = { this.state.authenticated }/>
-            <br/>
-            <div>
-              <HashRouter ref={r => this.router = r}>
-                <div>
-                  <br/>
-                  <Switch>
-                    <Route path="/login" render={ () => <Login login={this.login} /> }/>
-                    <Route path="/baskets/:id" exact component={BasketsShowContainer} />
-                    <Route path="/baskets" render={ () => <BasketsIndex authenticated={ this.state.authenticated} user_id = {this.state.user_id } token = { this.token }/> }/>
-                    <Route exact path="/" render={() => (<Redirect to="/baskets"/>)}/>
-                  </Switch>
-                </div>
-              </HashRouter>
+            <h1 className="text-center">GROCER-REACT<small> purchase tracking for New Season Market shoppers</small></h1>
+            <HashRouter ref={r => this.router = r}>
+                <Switch>
+                    <Route exact path="/welcome" render={() => {
+                      return (
+                      this.state.authenticated === true ? (
+                        <Redirect to="/baskets"/>
+                    ) : (
+                      <Welcome/>
+                    )
+                  )}}/>
+                  <Route exact path="/login" render={() => {
+                    return (
+                    this.state.authenticated === true ? (
+                      <Redirect to="/baskets"/>
+                  ) : (
+                    <Login login={this.login}/>
+                  )
+                )}}/>
+                    <Route path="/baskets" component={MainLayout} />
+                    <Route exact path="/" render={() => (<Redirect to="/welcome"/>)}/>
+                </Switch>
+            </HashRouter>
             </div>
-          </div>
-        </div>
-      </div>
-    )
+            </div>
+            </div>
+        );
   };
 };
 

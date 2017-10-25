@@ -20,7 +20,7 @@ class BasketsShowContainer extends Component {
       this.setState({basket: response.data});
     })
   };
-  
+
   render(){
     if(this.state.basket == null) {
       return <h4>Loading...</h4>
