@@ -2,33 +2,30 @@ import HttpClient from './http_client';
 import StorageManager from '../helpers/storage_manager';
 
 class BasketService {
-  constructor(){
-    if(StorageManager.get("userInfo")!== null) {
+  constructor() {
+    if (StorageManager.get('userInfo') !== null) {
       this.authHeaders = {
         'Content-Type': 'application/json',
-        'Authorization': StorageManager.get('userInfo').token
+        Authorization: StorageManager.get('userInfo').token,
       };
+    }
+  }
+
+  async getBaskets(args) {
+    const baskets = await HttpClient.get('baskets', args, this.authHeaders);
+    return {
+      data: baskets.data,
+      headers: baskets.headers,
     };
   }
 
-  getBaskets(args) {
-    return HttpClient.get('baskets', args, this.authHeaders)
-    .then((response) => {
-      return { data: response.data,
-               headers: response.headers
-             };
-    });
-  };
-
-  getChart(args) {
-    return HttpClient.get('spending_history', args, this.authHeaders)
-    .then((response) => {
-      return { data: response.data,
-               headers: response.headers
-             };
-    });
-  };
-
+  async getChart(args) {
+    const spendingHistory = await HttpClient.get('spending_history', args, this.authHeaders);
+    return {
+      data: spendingHistory.data,
+      headers: spendingHistory.headers,
+    };
+  }
 }
 
 export default BasketService;
