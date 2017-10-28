@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import moment from 'moment';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
@@ -7,8 +6,7 @@ import BasketsTable from './baskets_table';
 import Paginate from './paginate';
 import DateForm from './date_form';
 import SpendingChart from './spending_chart';
-
-const URL = process.env.REACT_APP_URL;
+import BasketService from '../api/basket_service';
 
 class BasketsIndex extends Component {
   constructor(props) {
@@ -29,6 +27,7 @@ class BasketsIndex extends Component {
     this.loadTable = this.loadTable.bind(this);
     this.loadChart = this.loadChart.bind(this);
     this.loadChartAndTable = this.loadChartAndTable.bind(this);
+    this.basketService = new BasketService();
   }
 
   componentDidMount() {
@@ -42,17 +41,6 @@ class BasketsIndex extends Component {
   }
 
   loadChart(args) {
-    let token
-    let headers
-
-    if(localStorage.getItem("userInfo") !== null) {
-       token = JSON.parse(localStorage.getItem('userInfo')).token
-       headers = {
-              'Content-Type': 'application/json',
-              'Authorization': token
-       }
-    }
-
     const params = {
       user_id: args.user_id || null,
       newest_date: args.newest_date == null ? this.state.newest_date : args.newest_date,
@@ -60,32 +48,16 @@ class BasketsIndex extends Component {
       unit: args.unit || null
     };
 
-    axios({
-      method: 'get',
-      url: `${URL}/spending_history`,
-      params: params,
-      headers: headers
-    })
-    .then(response => {
-      const dateArray = response.data.data
-      this.setState({ chartData: dateArray,
-                      unit: response.data.unit,
-                    })
-    });
-  };
+    this.basketService.getChart(params).then((basket) => {
+      const dateArray = basket.data.data
+      this.setState({
+                      chartData: dateArray,
+                      unit: basket.data.unit
+                    });
+      });
+    };
 
   loadTable(args) {
-    let token
-    let headers
-
-    if(localStorage.getItem("userInfo") !== null) {
-       token = JSON.parse(localStorage.getItem('userInfo')).token
-       headers = {
-              'Content-Type': 'application/json',
-              'Authorization': token
-          }
-    }
-
     const direction = args.desc === true ? 'desc' : 'asc';
     const params = {
       user_id: args.user_id || null,
@@ -97,27 +69,21 @@ class BasketsIndex extends Component {
       per_page: args.per_page || this.state.perPage
     };
 
-    axios({
-      method: 'get',
-      url: `${URL}/baskets`,
-      params: params,
-      headers: headers
-    })
-      .then((response) => {
-        this.setState(function(prevState){
-          return {
-            currentPage: args.page || prevState.currentPage,
-            desc: args.desc,
-            loaded: true,
-            newest_date: args.newest_date || prevState.newest_date,
-            oldest_date: args.oldest_date || prevState.oldest_date,
-            pageOfBaskets: response.data,
-            perPage: args.per_page || prevState.perPage,
-            sortCategory: args.category,
-            totalPages: Math.ceil(response.headers['total'] / response.headers['per-page']) || prevState.totalPages
-          }
-        });
+    this.basketService.getBaskets(params).then((baskets) =>{
+      this.setState(function(prevState){
+        return {
+          currentPage: args.page || prevState.currentPage,
+          desc: args.desc,
+          loaded: true,
+          newest_date: args.newest_date || prevState.newest_date,
+          oldest_date: args.oldest_date || prevState.oldest_date,
+          pageOfBaskets: baskets.data,
+          perPage: args.per_page || prevState.perPage,
+          sortCategory: args.category,
+          totalPages: Math.ceil(baskets.headers['total'] / baskets.headers['per-page']) || prevState.totalPages
+        }
       });
+    });
   }
 
   render() {
