@@ -11,21 +11,23 @@ class BasketService {
     }
   }
 
-  async getBaskets(args) {
-    const baskets = await HttpClient.get('baskets', args, this.authHeaders);
+  getBaskets(args) {
+    return this.getResponse('baskets', args);
+  }
+
+  getChart(args) {
+    return this.getResponse('spending_history', args);
+  }
+
+  async getResponse(urlSuffix, args) {
+    const response = await HttpClient.get(urlSuffix, args, this.authHeaders);
     return {
-      data: baskets.data,
-      headers: baskets.headers,
+      data: response.data,
+      headers: response.headers,
     };
   }
 
-  async getChart(args) {
-    const spendingHistory = await HttpClient.get('spending_history', args, this.authHeaders);
-    return {
-      data: spendingHistory.data,
-      headers: spendingHistory.headers,
-    };
-  }
+
 }
 
 export default BasketService;
