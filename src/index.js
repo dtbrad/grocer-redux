@@ -4,156 +4,137 @@ import { HashRouter, Route, Switch, Redirect } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
 import './index.css';
-import BasketsIndex from './baskets_index/baskets_index'
-import BasketsShowContainer from './baskets_show/baskets_show_container'
-import Header from './header';
-import Login from './login';
+import BasketsIndex from './baskets_index/baskets_index';
+import BasketsShowContainer from './baskets_show/baskets_show_container';
+import Navigation from './navigation';
+import TokenHelper from './auth/token_helper';
+import Login from './auth/login';
 import Welcome from './welcome';
 import Footer from './footer';
-import axios from 'axios';
-
-
-const URL = process.env.REACT_APP_URL;
 
 class Index extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-        authenticated: false,
-        user_id: null,
-        user_name: null,
-        user_email: null
+      authenticated: null,
     };
-    this.saveLoginInfo = this.saveLoginInfo.bind(this);
+    this.isAuthenticated = this.isAuthenticated.bind(this);
+    this.loggedIn = this.loggedIn.bind(this);
     this.logout = this.logout.bind(this);
-    this.login = this.login.bind(this)
-    this.isAuthenticated = this.isAuthenticated.bind(this)
-    this.token = this.token.bind(this)
   }
 
   componentDidMount() {
     this.isAuthenticated();
-  };
+  }
 
-  isAuthenticated(){
-    if(localStorage.getItem("userInfo") !== null) {
+  isAuthenticated() {
+    if (TokenHelper.tokenCurrent('jwt')) {
       this.setState({
         authenticated: true,
-        user_id: JSON.parse(localStorage.getItem('userInfo')).user_id,
-        user_name: JSON.parse(localStorage.getItem('userInfo')).user_name,
-        user_email: JSON.parse(localStorage.getItem('userInfo')).user_email
-      })
-    };
-  };
-
-  token(){
-    return JSON.parse(localStorage.getItem('userInfo')).token
-  }
-
-  logout(){
-    localStorage.removeItem("userInfo");
-    this.router.history.push('/welcome');
-
+      });
+      return true;
+    }
+    const alreadyLoggedIn = this.state.authenticated;
+    TokenHelper.remove('jwt');
     this.setState({
-        authenticated: false,
-        user_id: null,
-        user_email: null,
-        user_name: null
+      authenticated: false,
     });
+    if (alreadyLoggedIn === true) {
+      this.router.history.push('/login');
+    } else {
+      this.router.history.push('/welcome');
+    }
+    return false;
   }
 
-  login(email, password) {
-    axios.post(`${URL}/login`, {
-      user: { email: email,
-              password: password
-            }
-    })
-    .then(response => {
-      let userInfo = { token: response.headers.jwt,
-                       user_id: response.headers.user_id,
-                       user_name: response.headers.user_name,
-                       user_email: response.headers.user_email
-                    };
-      this.saveLoginInfo(userInfo);
-      this.setState(function(){
-        let userInfo = JSON.parse(localStorage.getItem('userInfo'));
-        return {
-          authenticated: true,
-          user_id: userInfo.user_id,
-          user_email: userInfo.user_email,
-          user_name: userInfo.user_name
-        }
-      })
-      this.router.history.push('/baskets');
+  async loggedIn() {
+    await this.setState({ authenticated: true });
+    this.router.history.push('/baskets');
+  }
 
-    })
-    .catch(function(){
-      alert("Invalid login credentials, please try again")
-    });
-  };
+  async logout() {
+    await this.setState({ authenticated: false });
+    TokenHelper.remove('jwt');
+    this.router.history.push('/welcome');
+  }
 
-  saveLoginInfo(userInfo) {
-    localStorage.setItem('userInfo', JSON.stringify(userInfo));
-  };
-
-
-
-  render(){
-    const MainLayout = () => {
-      return (
-        <div>
-        <Header logout = { this.logout } user_name = { this.state.user_name } isAuthenticated = { this.state.authenticated }/>
-        <br/>
-        <div>
+  render() {
+    return (
+      <div className="container">
+        <div className="col-md-10 col-md-offset-1">
+          <div className="alert alert-info">
+            <p> There are three demo accounts: user1@mail.com, user2@mail.com and
+              user3@mail.com. All have the same password: &quot;password&quot;
+            </p>
+          </div>
+          <h1 className="text-center">GROCER-REACT<small> purchase tracking for New Season Market shoppers</small></h1>
+          <Navigation authenticated={this.state.authenticated} logout={this.logout} />
           <HashRouter ref={r => this.router = r}>
             <div>
-              <br/>
+              <br />
               <Switch>
-                <Route path="/baskets/:id" exact component={BasketsShowContainer} />
-                <Route path="/baskets" render={ () => <BasketsIndex authenticated={ this.state.authenticated} user_id = {this.state.user_id } token = { this.token }/> }/>
+
+                <Route exact path="/login" render={() => {
+                  return (
+                    this.state.authenticated === true ? (
+                      <Redirect to="/baskets" />
+                    ) : (
+                      <Login loggedIn={this.loggedIn} />
+                    )
+                  );
+                }}
+                />
+
+                <Route path="/baskets/:id" exact render={({ match }) => {
+                  return (
+                    this.state.authenticated === false ? (
+                      <Redirect to="/login" />
+                    ) : (
+                      <BasketsShowContainer
+                        authenticated={this.state.authenticated}
+                        isAuthenticated={this.isAuthenticated}
+                        match={match}
+                      />
+                    )
+                  );
+                }}
+                />
+
+                <Route exact path="/baskets" render={() => {
+                  return (
+                    this.state.authenticated === false ? (
+                      <Redirect to="/login" />
+                    ) : (
+                      <BasketsIndex
+                        authenticated={this.state.authenticated}
+                        isAuthenticated={this.isAuthenticated}
+                      />
+                    )
+                  );
+                }}
+                />
+
+                <Route exact path="/welcome" render={() => {
+                  return (
+                    this.state.authenticated === true ? (
+                      <Redirect to="/baskets" />
+                    ) : (
+                      <Welcome />
+                    )
+                  );
+                }}
+                />;
+
+                <Route exact path="/" render={() => (<Redirect to="/welcome" />)} />
+
               </Switch>
             </div>
           </HashRouter>
         </div>
-        </div>
-      )
-    };
-
-    return (
-        <div className="container">
-          <div className="col-md-10 col-md-offset-1">
-          <br/>
-            <div className= "alert alert-info">
-              <p> Note to user: three demo accounts:  sample@mail.com (same data that a guest sees), user_one@mail.com, and user_two@mail.com. All have the same password: "password" </p>
-            </div>
-            <h1 className="text-center">GROCER-REACT<small> purchase tracking for New Season Market shoppers</small></h1>
-            <HashRouter ref={r => this.router = r}>
-                <Switch>
-                    <Route exact path="/welcome" render={() => {
-                      return (
-                      this.state.authenticated === true ? (
-                        <Redirect to="/baskets"/>
-                    ) : (
-                      <Welcome/>
-                    )
-                  )}}/>
-                  <Route exact path="/login" render={() => {
-                    return (
-                    this.state.authenticated === true ? (
-                      <Redirect to="/baskets"/>
-                  ) : (
-                    <Login login={this.login}/>
-                  )
-                )}}/>
-                    <Route path="/baskets" component={MainLayout} />
-                    <Route exact path="/" render={() => (<Redirect to="/welcome"/>)}/>
-                </Switch>
-            </HashRouter>
-            </div>
-            <Footer />
-            </div>
-        );
-  };
-};
+        <Footer />
+      </div>
+    );
+  }
+}
 
 ReactDOM.render(<Index />, document.getElementById('root'));

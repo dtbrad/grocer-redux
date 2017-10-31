@@ -1,59 +1,46 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-import BasketsShow from './baskets_show'
 import { Alert } from 'react-bootstrap';
-const URL = process.env.REACT_APP_URL;
+import BasketsShow from './baskets_show';
+import BasketService from '../api/basket_service';
+import TokenHelper from '../auth/token_helper';
 
 class BasketsShowContainer extends Component {
-
   constructor(props) {
     super(props);
     this.state = { basket: null, error: null };
     this.loadBasket = this.loadBasket.bind(this);
-  };
+  }
 
   componentDidMount() {
     this.loadBasket();
-  };
+  }
 
-  loadBasket() {
-    let self = this
-    let token
-    let headers
-
-    if(localStorage.getItem("userInfo") !== null) {
-       token = JSON.parse(localStorage.getItem('userInfo')).token
-       headers = {
-              'Content-Type': 'application/json',
-              'Authorization': token
-       }
+  async loadBasket() {
+    if (this.props.isAuthenticated()) {
+      const { id } = this.props.match.params;
+      const response = await BasketService.getBasket({ id })
+      if (response.status === 400) {
+        this.setState({ error: response.data.message[0] });
+      } else {
+        TokenHelper.set('jwt', response.headers.jwt);
+        this.setState({ basket: response.data });
+      }
     }
-    axios({
-      method: 'get',
-      url: `${URL}/baskets/${this.props.match.params.id}`,
-      headers: headers
-    })
-    .then(response => {
-      this.setState({basket: response.data});
-    })
-    .catch(function(error){
-      self.setState({error: error.response.data.message[0]});
-    });;
-  };
+  }
 
-  render(){
+  render() {
     const showTheUser = this.state.error === null ? (
-      <BasketsShow basket = { this.state.basket }/>
+      <BasketsShow basket={this.state.basket} />
     ) : (
       <Alert bsStyle="danger" className="text-center"> {this.state.error } </Alert>
-    )
+    );
 
-    if(this.state.basket == null && this.state.error === null) {
-      return <h4>Loading...</h4>
-    };
+    if (this.state.basket == null && this.state.error === null) {
+      return <h4>Loading...</h4>;
+    }
 
-    return ( showTheUser )
-  };
-};
+    return showTheUser;
+  }
+}
 
-export default BasketsShowContainer
+export default BasketsShowContainer;

@@ -1,33 +1,42 @@
 import HttpClient from './http_client';
-import StorageManager from '../helpers/storage_manager';
+import TokenHelper from '../auth/token_helper';
 
 class BasketService {
-  constructor() {
-    if (StorageManager.get('userInfo') !== null) {
-      this.authHeaders = {
+  static setHeaders() {
+    if (TokenHelper.get('jwt') !== null) {
+      return {
         'Content-Type': 'application/json',
-        Authorization: StorageManager.get('userInfo').token,
+        Authorization: TokenHelper.get('jwt'),
       };
     }
+    return null;
   }
 
-  getBaskets(args) {
+  static getBaskets(args) {
     return this.getResponse('baskets', args);
   }
 
-  getChart(args) {
+  static getBasket(args) {
+    return this.getResponse(`baskets/${args.id}`, args);
+  }
+
+  static getChart(args) {
     return this.getResponse('spending_history', args);
   }
 
-  async getResponse(urlSuffix, args) {
-    const response = await HttpClient.get(urlSuffix, args, this.authHeaders);
-    return {
-      data: response.data,
-      headers: response.headers,
-    };
+  static async getResponse(urlSuffix, args) {
+    const headers = this.setHeaders();
+    try {
+      const response = await HttpClient.get(urlSuffix, args, headers);
+      return {
+        data: response.data,
+        headers: response.headers,
+        status: response.status,
+      };
+    } catch (error) {
+      return error.response;
+    }
   }
-
-
 }
 
 export default BasketService;

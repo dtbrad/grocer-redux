@@ -4,7 +4,7 @@ html {
 }
 body {
     margin: 0 0 60px;}
-    
+
 footer {
     text-align:center;
     padding:20px;
@@ -15,6 +15,11 @@ footer {
     height: 60px;
     width: 100%;
 }
+
+.navbar-default {
+  border: none;
+}
+
 
 .btn:focus {
   outline: none;

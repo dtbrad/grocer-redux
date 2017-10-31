@@ -1,13 +1,14 @@
 import React from 'react';
 import { HashRouter, Link } from 'react-router-dom';
 import { Nav, Navbar, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
+import TokenHelper from './auth/token_helper';
 
-const Header = (props) => {
+const Navigation = (props) => {
 
   const LoginStatus = () => {
-    if(props.isAuthenticated === true) {
+    if(props.authenticated === true) {
       return (
-        <NavDropdown eventKey={3} title={ `Logged in as ${ props.user_name }` } id="basic-nav-dropdown">
+        <NavDropdown eventKey={3} title={ `Logged in as ${TokenHelper.userName('jwt')}` } id="basic-nav-dropdown">
           <MenuItem eventKey={3.1} onClick = {props.logout}>Logout</MenuItem>
         </NavDropdown>
       )
@@ -36,4 +37,4 @@ const Header = (props) => {
 
 };
 
-export default Header;
+export default Navigation;
