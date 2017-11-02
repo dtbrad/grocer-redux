@@ -11,6 +11,7 @@ export default class Login extends Component {
       email: '',
       password: '',
       error: null,
+      loading: null,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -27,6 +28,7 @@ export default class Login extends Component {
 
   async handleSubmit(event) {
     event.preventDefault();
+    this.setState({ loading: true });
     if (this.validateForm()) {
       const response = await UsersService.loginUser({
         email: this.state.email,
@@ -49,6 +51,11 @@ export default class Login extends Component {
       null
     ) : (
       <Alert bsStyle="danger" className="text-center"> {this.state.error } </Alert>
+    );
+    const loadingMessage = this.state.loading === null ? (
+      null
+    ) : (
+      <Alert bsStyle="warning" className="text-center"> Loading... </Alert>
     );
 
     return (
@@ -85,6 +92,7 @@ export default class Login extends Component {
             </div>
           </div>
         </div>
+        { loadingMessage }
         <div className="text-center"><Link to={'/welcome'}>Back to Home Page</Link></div>
       </div>
     );
