@@ -3,6 +3,7 @@ import moment from 'moment';
 import { Alert } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
+import PropTypes from 'prop-types';
 import BasketsTable from './baskets_table';
 import Paginate from './paginate';
 import DateForm from './date_form';
@@ -78,8 +79,8 @@ class BasketsIndex extends Component {
         this.setState({ error: response.data.errors[0] });
       } else {
         TokenHelper.set('jwt', response.headers.jwt);
-        this.setState((prevState) => {
-          return {
+        this.setState(prevState => (
+          {
             currentPage: args.page || prevState.currentPage,
             desc: args.desc,
             loaded: true,
@@ -89,8 +90,7 @@ class BasketsIndex extends Component {
             perPage: args.per_page || prevState.perPage,
             sortCategory: args.category,
             totalPages: Math.ceil(response.headers.total / response.headers['per-page']) || prevState.totalPages,
-          };
-        });
+          }));
       }
     }
   }
@@ -136,5 +136,9 @@ class BasketsIndex extends Component {
     );
   }
 }
+
+BasketsIndex.propTypes = {
+  isAuthenticated: PropTypes.func.isRequired,
+};
 
 export default BasketsIndex;
