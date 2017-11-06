@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { HashRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
 import './index.css';
@@ -69,7 +69,7 @@ class Index extends Component {
           </div>
           <h1 className="text-center">GROCER-REACT<small> purchase tracking for New Season Market shoppers</small></h1>
           <Navigation authenticated={this.state.authenticated} logout={this.logout} />
-          <HashRouter ref={r => this.router = r}>
+          <BrowserRouter ref={r => this.router = r}>
             <div>
               <br />
               <Switch>
@@ -129,7 +129,7 @@ class Index extends Component {
 
               </Switch>
             </div>
-          </HashRouter>
+          </BrowserRouter>
         </div>
         <Footer />
       </div>

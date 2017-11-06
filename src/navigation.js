@@ -1,5 +1,5 @@
 import React from 'react';
-import { HashRouter, Link } from 'react-router-dom';
+import { BrowserRouter, Link } from 'react-router-dom';
 import { Nav, Navbar, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 import TokenHelper from './auth/token_helper';
 
@@ -21,7 +21,7 @@ const Navigation = (props) => {
   { return null }
 
   return (
-    <HashRouter>
+    <BrowserRouter>
 
       <Navbar fluid>
         <Nav>
@@ -31,7 +31,7 @@ const Navigation = (props) => {
           <LoginStatus/>
         </Nav>
     </Navbar>
-    </HashRouter>
+    </BrowserRouter>
   );
 
 
