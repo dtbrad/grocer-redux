@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Alert } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 import UsersService from '../api/users_service';
 import TokenHelper from './token_helper';
 
@@ -36,7 +37,7 @@ export default class Login extends Component {
       });
       if (response.status === 200) {
         await TokenHelper.set('jwt', response.headers.jwt);
-        this.props.loggedIn()
+        this.props.loggedIn();
       } else {
         this.setState({ error: 'Invalid email or password' });
       }
@@ -93,8 +94,12 @@ export default class Login extends Component {
           </div>
         </div>
         { loadingMessage }
-        <div className="text-center"><Link to={'/welcome'}>Back to Home Page</Link></div>
+        <div className="text-center"><Link to="/welcome">Back to Home Page</Link></div>
       </div>
     );
   }
 }
+
+Login.propTypes = {
+  loggedIn: PropTypes.func.isRequired,
+};

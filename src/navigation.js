@@ -1,40 +1,36 @@
 import React from 'react';
-import { BrowserRouter, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Nav, Navbar, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 import TokenHelper from './auth/token_helper';
 
 const Navigation = (props) => {
-
   const LoginStatus = () => {
-    if(props.authenticated === true) {
+    if (props.authenticated === true) {
       return (
-        <NavDropdown eventKey={3} title={ `Logged in as ${TokenHelper.userName('jwt')}` } id="basic-nav-dropdown">
-          <MenuItem eventKey={3.1} onClick = {props.logout}>Logout</MenuItem>
+        <NavDropdown eventKey={3} title={`Logged in as ${TokenHelper.userName('jwt')}`} id="basic-nav-dropdown">
+          <MenuItem eventKey={3.1} onClick={props.logout}>Logout</MenuItem>
         </NavDropdown>
-      )
+      );
     }
-    else { return <NavItem><Link to={ '/login' }>Login</Link></NavItem> }
-  }
-
-  if( props.hideNav === true )
-
-  { return null }
+    return <NavItem componentClass="span"><Link to="/login">Login</Link></NavItem>;
+  };
 
   return (
-    <BrowserRouter>
-
-      <Navbar fluid>
-        <Nav>
-          <NavItem eventKey={1} href="#"><Link to={ '/baskets' }>Shopping History</Link></NavItem>
-        </Nav>
-        <Nav pullRight>
-          <LoginStatus/>
-        </Nav>
+    <Navbar fluid>
+      <Nav>
+        <NavItem componentClass="span" eventKey={1}><Link to="/baskets">Shopping History</Link></NavItem>
+      </Nav>
+      <Nav pullRight>
+        <LoginStatus />
+      </Nav>
     </Navbar>
-    </BrowserRouter>
   );
+};
 
-
+Navigation.propTypes = {
+  authenticated: PropTypes.bool.isRequired,
+  logout: PropTypes.func.isRequired,
 };
 
 export default Navigation;

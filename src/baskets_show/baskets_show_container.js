@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Alert } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 import BasketsShow from './baskets_show';
 import BasketService from '../api/basket_service';
 import TokenHelper from '../auth/token_helper';
@@ -18,7 +19,7 @@ class BasketsShowContainer extends Component {
   async loadBasket() {
     if (this.props.isAuthenticated()) {
       const { id } = this.props.match.params;
-      const response = await BasketService.getBasket({ id })
+      const response = await BasketService.getBasket({ id });
       if (response.status === 400) {
         this.setState({ error: response.data.message[0] });
       } else {
@@ -42,5 +43,14 @@ class BasketsShowContainer extends Component {
     return showTheUser;
   }
 }
+
+BasketsShowContainer.propTypes = {
+  isAuthenticated: PropTypes.func.isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.node,
+    }).isRequired,
+  }).isRequired,
+};
 
 export default BasketsShowContainer;

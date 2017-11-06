@@ -1,6 +1,7 @@
 import React from 'react';
 import Moment from 'react-moment';
 import NumberFormat from 'react-number-format';
+import PropTypes from 'prop-types';
 import LineItem from './line_item';
 
 const BasketsShow = ({ basket }) => {
@@ -36,6 +37,10 @@ const BasketsShow = ({ basket }) => {
       </div>
     </div>
   );
+};
+
+BasketsShow.propTypes = {
+  basket: PropTypes.shape.isRequired,
 };
 
 export default BasketsShow;

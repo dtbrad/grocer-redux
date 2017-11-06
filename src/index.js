@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { HashRouter, Route, Switch, Redirect } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
 import './index.css';
@@ -16,7 +16,7 @@ class Index extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      authenticated: null,
+      authenticated: false,
     };
     this.isAuthenticated = this.isAuthenticated.bind(this);
     this.loggedIn = this.loggedIn.bind(this);
@@ -60,33 +60,34 @@ class Index extends Component {
 
   render() {
     return (
-      <div className="container">
-        <div className="col-md-10 col-md-offset-1">
-          <div className="alert alert-info">
-            <p> There are three demo accounts: user1@mail.com, user2@mail.com and
-              user3@mail.com. All have the same password: &quot;password&quot;
-            </p>
-          </div>
-          <h1 className="text-center">GROCER-REACT<small> purchase tracking for New Season Market shoppers</small></h1>
-          <Navigation authenticated={this.state.authenticated} logout={this.logout} />
-          <BrowserRouter ref={r => this.router = r}>
+      <HashRouter ref={(r) => { this.router = r; }}>
+        <div className="container">
+          <div className="col-md-10 col-md-offset-1">
+            <div className="alert alert-info">
+              <p> There are three demo accounts: user1@mail.com, user2@mail.com and
+                user3@mail.com. All have the same password: &quot;password&quot;
+              </p>
+            </div>
+            <h1 className="text-center">GROCER-REACT<small> purchase tracking for New Season Market shoppers</small></h1>
+            <Navigation authenticated={this.state.authenticated} logout={this.logout} />
             <div>
               <br />
               <Switch>
 
-                <Route exact path="/login" render={() => {
-                  return (
+                <Route
+                  path="/login"
+                  render={() => (
                     this.state.authenticated === true ? (
                       <Redirect to="/baskets" />
                     ) : (
                       <Login loggedIn={this.loggedIn} />
                     )
-                  );
-                }}
+                  )}
                 />
 
-                <Route path="/baskets/:id" exact render={({ match }) => {
-                  return (
+                <Route
+                  path="/baskets/:id"
+                  render={({ match }) => (
                     this.state.authenticated === false ? (
                       <Redirect to="/login" />
                     ) : (
@@ -96,12 +97,12 @@ class Index extends Component {
                         match={match}
                       />
                     )
-                  );
-                }}
+                  )}
                 />
 
-                <Route exact path="/baskets" render={() => {
-                  return (
+                <Route
+                  path="/baskets"
+                  render={() => (
                     this.state.authenticated === false ? (
                       <Redirect to="/login" />
                     ) : (
@@ -110,29 +111,32 @@ class Index extends Component {
                         isAuthenticated={this.isAuthenticated}
                       />
                     )
-                  );
-                }}
+                  )}
                 />
 
-                <Route exact path="/welcome" render={() => {
-                  return (
+                <Route
+                  path="/welcome"
+                  render={() => (
                     this.state.authenticated === true ? (
                       <Redirect to="/baskets" />
                     ) : (
                       <Welcome />
                     )
-                  );
-                }}
+                  )}
                 />;
 
-                <Route exact path="/" render={() => (<Redirect to="/welcome" />)} />
+                <Route
+                  exact
+                  path="/"
+                  render={() => <Redirect to="/welcome" />}
+                />
 
               </Switch>
             </div>
-          </BrowserRouter>
+          </div>
+          <Footer />
         </div>
-        <Footer />
-      </div>
+      </HashRouter>
     );
   }
 }
