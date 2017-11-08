@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { HashRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
 import './index.css';
@@ -60,7 +60,7 @@ class Index extends Component {
 
   render() {
     return (
-      <HashRouter ref={(r) => { this.router = r; }}>
+      <BrowserRouter ref={(r) => { this.router = r; }}>
         <div className="container">
           <div className="col-md-10 col-md-offset-1">
             <div className="alert alert-info">
@@ -136,7 +136,7 @@ class Index extends Component {
           </div>
           <Footer />
         </div>
-      </HashRouter>
+      </BrowserRouter>
     );
   }
 }
