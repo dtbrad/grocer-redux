@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Alert } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import BasketsShow from './baskets_show';
+import BasketsShowView from './baskets_show_view';
 import BasketService from '../api/basket_service';
 import TokenHelper from '../auth/token_helper';
 
@@ -31,7 +31,7 @@ class BasketsShowContainer extends Component {
 
   render() {
     const showTheUser = this.state.error === null ? (
-      <BasketsShow basket={this.state.basket} />
+      <BasketsShowView basket={this.state.basket} />
     ) : (
       <Alert bsStyle="danger" className="text-center"> {this.state.error } </Alert>
     );

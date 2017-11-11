@@ -4,14 +4,10 @@ import { Alert } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
 import PropTypes from 'prop-types';
-import BasketsTable from './baskets_table';
-import Paginate from './paginate';
-import DateForm from './date_form';
-import SpendingChart from './spending_chart';
-import BasketService from '../api/basket_service';
 import TokenHelper from '../auth/token_helper';
+import SpendingHistoryView from './spending_history_view';
 
-class BasketsIndex extends Component {
+class SpendingHistory extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -21,7 +17,7 @@ class BasketsIndex extends Component {
       loaded: false,
       newest_date: moment('2017-09-25'),
       oldest_date: moment('2015-11-23'),
-      pageOfBaskets: [],
+      pageOfResources: [],
       perPage: 10,
       totalPages: 0,
       unit: null,
@@ -48,7 +44,7 @@ class BasketsIndex extends Component {
         oldest_date: args.oldest_date == null ? this.state.oldest_date : args.oldest_date,
         unit: args.unit || null,
       };
-      const response = await BasketService.getChart(params);
+      const response = await this.props.resourceService.getChart(params);
       if (response.status === 400) {
         this.setState({ error: response.data.message[0] });
       } else {
@@ -65,16 +61,17 @@ class BasketsIndex extends Component {
   async loadTable(args) {
     if (this.props.isAuthenticated()) {
       const direction = args.desc === true ? 'desc' : 'asc';
+      const category = args.category !== undefined ? args.category : null;
       const params = {
         user_id: args.user_id || null,
-        category: args.category || null,
+        category,
         direction: direction || null,
         newest_date: args.newest_date == null ? this.state.newest_date : args.newest_date,
         oldest_date: args.oldest_date == null ? this.state.oldest_date : args.oldest_date,
         page: args.page || null,
         per_page: args.per_page || this.state.perPage,
       };
-      const response = await BasketService.getBaskets(params);
+      const response = await this.props.resourceService.getResources(params);
       if (response.status !== 200) {
         this.setState({ error: response.data.errors[0] });
       } else {
@@ -86,7 +83,7 @@ class BasketsIndex extends Component {
             loaded: true,
             newest_date: args.newest_date || prevState.newest_date,
             oldest_date: args.oldest_date || prevState.oldest_date,
-            pageOfBaskets: response.data,
+            pageOfResources: response.data,
             perPage: args.per_page || prevState.perPage,
             sortCategory: args.category,
             totalPages: Math.ceil(response.headers.total / response.headers['per-page']) || prevState.totalPages,
@@ -104,41 +101,22 @@ class BasketsIndex extends Component {
     }
 
     return (
-      <div>
-        <SpendingChart
-          chartData={this.state.chartData}
-          unit={this.state.unit}
-          loadChartAndTable={this.loadChartAndTable}
-        />
-        <DateForm
-          loadChart={this.loadChart}
-          loadChartAndTable={this.loadChartAndTable}
-          oldest_date={this.state.oldest_date}
-          newest_date={this.state.newest_date}
-          unit={this.state.unit}
-        />
-        <div className="panel panel-default">
-          <BasketsTable
-            desc={this.state.desc}
-            baskets={this.state.pageOfBaskets}
-            loadTable={this.loadTable}
-          />
-        </div>
-        <div className="text-center">
-          <Paginate
-            currentPage={this.state.currentPage}
-            totalPages={this.state.totalPages}
-            loadTable={this.loadTable}
-            desc={this.state.desc}
-          />
-        </div>
-      </div>
+      <SpendingHistoryView
+        {...this.state}
+        loadChartAndTable={this.loadChartAndTable}
+        loadChart={this.loadChart}
+        loadTable={this.loadTable}
+        headerArray={['date', 'items', 'total']}
+        tableComponent={this.props.table}
+      />
     );
   }
 }
 
-BasketsIndex.propTypes = {
+SpendingHistory.propTypes = {
   isAuthenticated: PropTypes.func.isRequired,
+  resourceService: PropTypes.func.isRequired,
+  table: PropTypes.func.isRequired,
 };
 
-export default BasketsIndex;
+export default SpendingHistory;

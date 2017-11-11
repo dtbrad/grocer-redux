@@ -4,7 +4,7 @@ import NumberFormat from 'react-number-format';
 import PropTypes from 'prop-types';
 import LineItem from './line_item';
 
-const BasketsShow = ({ basket }) => {
+const BasketsShowView = ({ basket }) => {
   const lineItems = basket.line_items.map(li => <LineItem key={li.id} info={li} />);
 
   return (
@@ -39,8 +39,8 @@ const BasketsShow = ({ basket }) => {
   );
 };
 
-BasketsShow.propTypes = {
+BasketsShowView.propTypes = {
   basket: PropTypes.shape.isRequired,
 };
 
-export default BasketsShow;
+export default BasketsShowView;

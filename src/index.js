@@ -4,13 +4,15 @@ import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
 import './index.css';
-import BasketsIndex from './baskets_index/baskets_index';
+import SpendingHistory from './shared_spending_history_components/spending_history';
 import BasketsShowContainer from './baskets_show/baskets_show_container';
 import Navigation from './navigation';
 import TokenHelper from './auth/token_helper';
 import Login from './auth/login';
 import Welcome from './welcome';
 import Footer from './footer';
+import BasketService from './api/basket_service';
+import BasketsTable from './baskets_spending_table/baskets_table';
 
 class Index extends Component {
   constructor(props) {
@@ -106,9 +108,11 @@ class Index extends Component {
                     this.state.authenticated === false ? (
                       <Redirect to="/login" />
                     ) : (
-                      <BasketsIndex
+                      <SpendingHistory
                         authenticated={this.state.authenticated}
                         isAuthenticated={this.isAuthenticated}
+                        resourceService={BasketService}
+                        table={BasketsTable}
                       />
                     )
                   )}

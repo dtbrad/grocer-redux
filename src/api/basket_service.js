@@ -12,7 +12,7 @@ class BasketService {
     return null;
   }
 
-  static getBaskets(args) {
+  static getResources(args) {
     return this.getResponse('baskets', args);
   }
 

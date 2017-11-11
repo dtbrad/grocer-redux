@@ -5,7 +5,7 @@ import DeepEqual from 'deep-equal';
 import PropTypes from 'prop-types';
 import 'react-datepicker/dist/react-datepicker.css';
 
-class DateForm extends React.Component {
+class SpendingHistoryControl extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -73,7 +73,8 @@ class DateForm extends React.Component {
   submitIfDatesPresent() {
     let oldestDate = null;
     let newestDate = null;
-    if (this.state.missingDates === true || this.state.outOfOrder === true || this.state.tooShortforMonth === true || this.state.tooShortforWeek === true) {
+    if (this.state.missingDates === true || this.state.outOfOrder === true ||
+      this.state.tooShortforMonth === true || this.state.tooShortforWeek === true) {
       alert('Fix your date range before submitting')
     } else if (DeepEqual(this.state.oldest_date, this.props.oldest_date) && DeepEqual(this.state.newest_date, this.props.newest_date)) {
       [oldestDate, newestDate] = [null, null];
@@ -141,7 +142,7 @@ class DateForm extends React.Component {
   }
 }
 
-DateForm.propTypes = {
+SpendingHistoryControl.propTypes = {
   oldest_date: PropTypes.instanceOf(moment).isRequired,
   newest_date: PropTypes.instanceOf(moment).isRequired,
   unit: PropTypes.string,
@@ -149,8 +150,8 @@ DateForm.propTypes = {
   loadChartAndTable: PropTypes.func.isRequired,
 };
 
-DateForm.defaultProps = {
+SpendingHistoryControl.defaultProps = {
   unit: 'month',
 };
 
-export default DateForm;
+export default SpendingHistoryControl;

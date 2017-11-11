@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import BasketsTableRow from './baskets_table_row';
 
-const BasketsTable = ({ baskets, desc, loadTable }) => {
-  const basketsTableContent = baskets.map(basket => (
+const BasketsTable = ({ resources, desc, loadTable }) => {
+  const basketsTableContent = resources.map(basket => (
     <BasketsTableRow key={basket.id} basket={basket} />
   ));
 
@@ -24,7 +24,7 @@ const BasketsTable = ({ baskets, desc, loadTable }) => {
 };
 
 BasketsTable.propTypes = {
-  baskets: PropTypes.arrayOf(PropTypes.shape).isRequired,
+  resources: PropTypes.arrayOf(PropTypes.shape).isRequired,
   desc: PropTypes.bool.isRequired,
   loadTable: PropTypes.func.isRequired,
 };
