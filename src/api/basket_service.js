@@ -21,7 +21,7 @@ class BasketService {
   }
 
   static getChart(args) {
-    return this.getResponse('spending_history', args);
+    return this.getResponse('baskets_spending_chart', args);
   }
 
   static async getResponse(urlSuffix, args) {
