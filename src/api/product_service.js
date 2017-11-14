@@ -24,6 +24,10 @@ class ProductService {
     return this.getResponse('product_spending_chart', args);
   }
 
+  static getIndexChart() {
+    return this.getResponse('products_index_total_spent_chart');
+  }
+
   static async getResponse(urlSuffix, args) {
     const headers = this.setHeaders();
     try {

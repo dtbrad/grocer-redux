@@ -3,6 +3,7 @@ import ProductsIndexTable from './products_index_table';
 import ProductService from '../api/product_service';
 import TokenHelper from '../auth/token_helper';
 import Paginate from '../shared_components/paginate';
+import TotalSpentChart from './total_spent_chart';
 
 class ProductsIndex extends Component {
   constructor(props) {
@@ -17,10 +18,24 @@ class ProductsIndex extends Component {
     };
 
     this.loadProducts = this.loadProducts.bind(this);
+    this.loadChart = this.loadChart.bind(this);
   }
 
-  componentDidMount() {
-    this.loadProducts({ desc: false, category: 'sort_name' });
+  async componentDidMount() {
+    await this.loadProducts({ desc: false, category: 'sort_name' }, this.loadChart());
+  }
+
+  async loadChart() {
+    const response = await ProductService.getIndexChart();
+    if (response.status !== 200) {
+      this.setState({ error: response.data.errors[0] });
+    } else {
+      TokenHelper.set('jwt', response.headers.jwt);
+      this.setState({
+        chartData: response.data,
+        loaded: true
+      });
+    }
   }
 
   async loadProducts(args) {
@@ -55,12 +70,17 @@ class ProductsIndex extends Component {
 
 
   render() {
-    if (this.state.loaded !== true) {
-      return <h4>Loading...</h4>;
-    }
+    // if (this.state.loaded !== true) {
+    //   return <h4>Loading...</h4>;
+    // }
+    const chart = this.state.chartData ? (
+      <TotalSpentChart chartData={this.state.chartData} />) : (
+      null
+    );
 
     return (
       <div>
+        {chart}
         <div className="panel panel-default">
           <ProductsIndexTable
             pageOfResources={this.state.pageOfResources}
