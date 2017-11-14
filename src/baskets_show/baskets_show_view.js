@@ -40,7 +40,17 @@ const BasketsShowView = ({ basket }) => {
 };
 
 BasketsShowView.propTypes = {
-  basket: PropTypes.shape.isRequired,
+  basket: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    transaction_date: PropTypes.string,
+    line_item_count: PropTypes.number,
+    total_cents: PropTypes.number,
+    line_items: PropTypes.arrayOf(PropTypes.shape),
+  }),
+};
+
+BasketsShowView.defaultProps = {
+  basket: {},
 };
 
 export default BasketsShowView;

@@ -1,7 +1,7 @@
 import HttpClient from './http_client';
 import TokenHelper from '../auth/token_helper';
 
-class BasketService {
+class ProductService {
   static setHeaders() {
     if (TokenHelper.get('jwt') !== null) {
       return {
@@ -12,16 +12,16 @@ class BasketService {
     return null;
   }
 
-  static getBaskets(args) {
-    return this.getResponse('baskets', args);
+  static getProducts(args) {
+    return this.getResponse('products', args);
   }
 
-  static getBasket(args) {
-    return this.getResponse(`baskets/${args.id}`, args);
+  static getProduct(args) {
+    return this.getResponse(`products/${args.id}`, args);
   }
 
   static getChart(args) {
-    return this.getResponse('baskets_spending_chart', args);
+    return this.getResponse('product_spending_chart', args);
   }
 
   static async getResponse(urlSuffix, args) {
@@ -39,4 +39,4 @@ class BasketService {
   }
 }
 
-export default BasketService;
+export default ProductService;

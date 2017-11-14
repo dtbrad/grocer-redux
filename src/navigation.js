@@ -1,8 +1,9 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { Nav, Navbar, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import TokenHelper from './auth/token_helper';
+
 
 const Navigation = (props) => {
   const LoginStatus = () => {
@@ -13,13 +14,14 @@ const Navigation = (props) => {
         </NavDropdown>
       );
     }
-    return <NavItem componentClass="span"><Link to="/login">Login</Link></NavItem>;
+    return <NavItem componentClass="span"><NavLink to="/login">Login</NavLink></NavItem>;
   };
 
   return (
     <Navbar fluid>
       <Nav>
-        <NavItem componentClass="span" eventKey={1}><Link to="/baskets">Shopping History</Link></NavItem>
+        <NavItem componentClass="spaced-nav-item" eventKey={1}><NavLink to="/baskets">Shopping History</NavLink></NavItem>
+        <NavItem componentClass="spaced-nav-item" eventKey={1}><NavLink to="/products">Products Purchased</NavLink></NavItem>
       </Nav>
       <Nav pullRight>
         <LoginStatus />

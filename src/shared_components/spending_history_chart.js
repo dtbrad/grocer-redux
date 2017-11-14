@@ -25,7 +25,7 @@ class SpendingChart extends React.Component {
     }
 
     const formattedData = this.props.chartData.map(x => (
-      [Date.parse(x[0]), x[1] / 100]
+      [Date.parse(x[0]), x[1]]
     ));
     const componentScope = this;
     const spendingTitle = `spending by ${this.props.unit}`;
@@ -51,7 +51,7 @@ class SpendingChart extends React.Component {
       tooltip: {
         formatter() {
           return (
-            `${properDateIntro} ${ReactHighcharts.Highcharts.dateFormat(properDateFormat, this.point.x)} - $${this.point.y}`
+            `${properDateIntro} ${ReactHighcharts.Highcharts.dateFormat(properDateFormat, this.point.x)} - ${this.point.y}`
           );
         },
       },

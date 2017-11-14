@@ -4,15 +4,15 @@ import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
 import './index.css';
-import SpendingHistory from './shared_spending_history_components/spending_history';
 import BasketsShowContainer from './baskets_show/baskets_show_container';
 import Navigation from './navigation';
 import TokenHelper from './auth/token_helper';
 import Login from './auth/login';
 import Welcome from './welcome';
 import Footer from './footer';
-import BasketService from './api/basket_service';
-import BasketsTable from './baskets_spending_table/baskets_table';
+import ProductsIndex from './products_index/products_index';
+import BasketsSpending from './baskets_spending/baskets_spending';
+import ProductSpending from './product_spending/product_spending';
 
 class Index extends Component {
   constructor(props) {
@@ -108,11 +108,38 @@ class Index extends Component {
                     this.state.authenticated === false ? (
                       <Redirect to="/login" />
                     ) : (
-                      <SpendingHistory
+                      <BasketsSpending
                         authenticated={this.state.authenticated}
                         isAuthenticated={this.isAuthenticated}
-                        resourceService={BasketService}
-                        table={BasketsTable}
+                      />
+                    )
+                  )}
+                />
+
+                <Route
+                  path="/products/:id"
+                  render={({ match }) => (
+                    this.state.authenticated === false ? (
+                      <Redirect to="/login" />
+                    ) : (
+                      <ProductSpending
+                        authenticated={this.state.authenticated}
+                        isAuthenticated={this.isAuthenticated}
+                        match={match}
+                      />
+                    )
+                  )}
+                />
+
+                <Route
+                  path="/products"
+                  render={() => (
+                    this.state.authenticated === false ? (
+                      <Redirect to="/login" />
+                    ) : (
+                      <ProductsIndex
+                        authenticated={this.state.authenticated}
+                        isAuthenticated={this.isAuthenticated}
                       />
                     )
                   )}

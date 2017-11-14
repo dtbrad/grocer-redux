@@ -5,9 +5,12 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
 import PropTypes from 'prop-types';
 import TokenHelper from '../auth/token_helper';
-import SpendingHistoryView from './spending_history_view';
+import SpendingHistoryView from '../shared_components/spending_history_view';
+import BasketsTable from './baskets_table';
+import BasketsSpendingChart from './baskets_spending_chart';
+import BasketService from '../api/basket_service';
 
-class SpendingHistory extends Component {
+class BasketsSpending extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -43,8 +46,9 @@ class SpendingHistory extends Component {
         newest_date: args.newest_date == null ? this.state.newest_date : args.newest_date,
         oldest_date: args.oldest_date == null ? this.state.oldest_date : args.oldest_date,
         unit: args.unit || null,
+        productId: this.state.productId || null,
       };
-      const response = await this.props.resourceService.getChart(params);
+      const response = await BasketService.getChart(params);
       if (response.status === 400) {
         this.setState({ error: response.data.message[0] });
       } else {
@@ -70,8 +74,9 @@ class SpendingHistory extends Component {
         oldest_date: args.oldest_date == null ? this.state.oldest_date : args.oldest_date,
         page: args.page || null,
         per_page: args.per_page || this.state.perPage,
+        productId: this.state.productId || null,
       };
-      const response = await this.props.resourceService.getResources(params);
+      const response = await BasketService.getBaskets(params);
       if (response.status !== 200) {
         this.setState({ error: response.data.errors[0] });
       } else {
@@ -107,16 +112,15 @@ class SpendingHistory extends Component {
         loadChart={this.loadChart}
         loadTable={this.loadTable}
         headerArray={['date', 'items', 'total']}
-        tableComponent={this.props.table}
+        tableComponent={BasketsTable}
+        chart={BasketsSpendingChart}
       />
     );
   }
 }
 
-SpendingHistory.propTypes = {
+BasketsSpending.propTypes = {
   isAuthenticated: PropTypes.func.isRequired,
-  resourceService: PropTypes.func.isRequired,
-  table: PropTypes.func.isRequired,
 };
 
-export default SpendingHistory;
+export default BasketsSpending;

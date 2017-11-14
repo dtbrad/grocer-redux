@@ -3,18 +3,19 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import Paginate from './paginate';
 import SpendingHistoryControl from './spending_history_control';
-import SpendingHistoryChart from './spending_history_chart';
 
 const SpendingHistoryView = (props) => {
-  const dan = 'Daniel';
-  const SpendingHistoryTable = props.tableComponent;
+  const product = props.pageOfResources[0].product_name || null;
+  // const SpendingHistoryTable = props.tableComponent;
+  const Chart = props.chart
+  const Table = props.tableComponent
   return (
     <div>
-      <SpendingHistoryChart
+      <h3> {product} </h3>
+      <Chart
         chartData={props.chartData}
         unit={props.unit}
         loadChartAndTable={props.loadChartAndTable}
-        dan={dan}
       />
       <SpendingHistoryControl
         loadChart={props.loadChart}
@@ -24,7 +25,7 @@ const SpendingHistoryView = (props) => {
         unit={props.unit}
       />
       <div className="panel panel-default">
-        <SpendingHistoryTable
+        <Table
           desc={props.desc}
           resources={props.pageOfResources}
           loadTable={props.loadTable}
