@@ -61,9 +61,15 @@ class Index extends Component {
   }
 
   render() {
+    const navigation = this.state.authenticated ? (
+      <Navigation authenticated={this.state.authenticated} logout={this.logout} />
+    ) : (
+      null);
+
     return (
       <BrowserRouter ref={(r) => { this.router = r; }}>
         <div className="container">
+          <br />
           <div className="col-md-10 col-md-offset-1">
             <div className="alert alert-info">
               <p> There are three demo accounts: user1@mail.com, user2@mail.com and
@@ -71,7 +77,7 @@ class Index extends Component {
               </p>
             </div>
             <h1 className="text-center">GROCER-REACT<small> purchase tracking for New Season Market shoppers</small></h1>
-            <Navigation authenticated={this.state.authenticated} logout={this.logout} />
+            {navigation}
             <div>
               <br />
               <Switch>
