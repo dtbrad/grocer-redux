@@ -1,18 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import Paginate from './paginate';
-import SpendingHistoryControl from './spending_history_control';
+import Paginate from '../shared_components/paginate';
+import SpendingHistoryControl from '../shared_components/spending_history_control';
+import BasketsTable from './baskets_table';
+import BasketsSpendingChart from './baskets_spending_chart';
 
-const SpendingHistoryView = (props) => {
-  const product = props.pageOfResources[0].product_name || null;
-  const SpendingHistoryTable = props.tableComponent;
-  const Chart = props.chart
-  const Table = props.tableComponent
+const BasketSpendingView = (props) => {
+
   return (
     <div>
-      <h3> {product} </h3>
-      <Chart
+      <BasketsSpendingChart
         chartData={props.chartData}
         unit={props.unit}
         loadChartAndTable={props.loadChartAndTable}
@@ -25,7 +23,7 @@ const SpendingHistoryView = (props) => {
         unit={props.unit}
       />
       <div className="panel panel-default">
-        <Table
+        <BasketsTable
           desc={props.desc}
           resources={props.pageOfResources}
           loadTable={props.loadTable}
@@ -44,7 +42,7 @@ const SpendingHistoryView = (props) => {
   );
 };
 
-SpendingHistoryView.propTypes = {
+BasketSpendingView.propTypes = {
   unit: PropTypes.string.isRequired,
   chartData: PropTypes.arrayOf(PropTypes.shape).isRequired,
   pageOfResources: PropTypes.arrayOf(PropTypes.shape).isRequired,
@@ -61,4 +59,4 @@ SpendingHistoryView.propTypes = {
 };
 
 
-export default SpendingHistoryView;
+export default BasketSpendingView;

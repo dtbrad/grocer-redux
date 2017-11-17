@@ -8,6 +8,7 @@ import TokenHelper from '../auth/token_helper';
 import SpendingHistoryView from '../shared_components/spending_history_view';
 import BasketsTable from './baskets_table';
 import BasketsSpendingChart from './baskets_spending_chart';
+import BasketsSpendingView from './baskets_spending_view';
 import BasketService from '../api/basket_service';
 
 class BasketsSpending extends Component {
@@ -106,7 +107,7 @@ class BasketsSpending extends Component {
     }
 
     return (
-      <SpendingHistoryView
+      <BasketsSpendingView
         {...this.state}
         loadChartAndTable={this.loadChartAndTable}
         loadChart={this.loadChart}
