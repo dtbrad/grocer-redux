@@ -8,7 +8,11 @@
         "node": true
     },
     "extends": "airbnb",
+    "plugins": [
+     "react"
+   ],
     "rules": {
+        "react/prop-types": 0,
         "indent": ["error", 2],
         "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
         "max-len": ["error", 150, 4],

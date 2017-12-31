@@ -15,18 +15,3 @@ footer {
     height: 60px;
     width: 100%;
 }
-
-.navbar, .navbar-default, .container-fluid {
-  border: none;
-  background-color: white;
-  box-shadow: none
-}
-
-a {
-  padding: 5px
-}
-
-
-.btn:focus {
-  outline: none;
-}
