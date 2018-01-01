@@ -1,14 +1,14 @@
 import React from 'react';
 import { Alert, Col, Grid, Row } from 'react-bootstrap';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
-import ProductsIndex from './ProductsIndex';
-import BasketsIndex from './BasketsIndex';
+import ProductsIndex from './ProductsIndex/Products';
+import Baskets from './BasketsIndex/Baskets';
 import LogIn from './LogIn';
 import Welcome from './Welcome';
 import Navigation from './Navigation';
-import TokenHelper from '../api/TokenHelper';
 
-const MainPage = ({ topState, logIn, logOut }) => {
+const MainPage = ({ isAuthenticated, loadSpendingTable, logIn, logOut, topState }) => {
+  const { authenticated, basket, baskets, product, products } = topState;
   const navigation = topState.authenticated ? (
     <Navigation authenticated={topState.authenticated} logOut={logOut} />
   ) : (
@@ -41,15 +41,18 @@ const MainPage = ({ topState, logIn, logOut }) => {
               />
               <Route
                 path="/shopping_trips"
-                render={() => (
+                render={() => {
+                  return (
                   topState.authenticated === true ? (
-                    <BasketsIndex
-                      data="This is the shopping trip index"
+                    <Baskets
+                      isAuthenticated={isAuthenticated}
+                      loadSpendingTable={loadSpendingTable}
+                      {...baskets}
                     />
                   ) : (
                     <Redirect to="/login" />
                   )
-                )}
+                )}}
               />
               <Route
                 path="/login"

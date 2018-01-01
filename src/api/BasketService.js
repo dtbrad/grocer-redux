@@ -1,5 +1,5 @@
-import HttpClient from './http_client';
-import TokenHelper from '../auth/token_helper';
+import HttpClient from './HttpClient';
+import TokenHelper from './TokenHelper';
 
 class BasketService {
   static setHeaders() {

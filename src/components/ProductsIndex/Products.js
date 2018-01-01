@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
-class ProductsIndex extends Component {
+class Products extends Component {
   render() {
     return <h4>{this.props.data}</h4>
   }
 }
 
-export default ProductsIndex;
+export default Products;
