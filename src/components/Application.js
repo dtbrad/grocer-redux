@@ -5,12 +5,23 @@ import Main from './Main';
 import Footer from './Footer';
 import TokenHelper from '../api/TokenHelper';
 import BasketService from '../api/BasketService';
+import ProductService from '../api/ProductService';
 
 class Application extends Component {
   state = {
     authenticated: false,
     baskets: {
       resourceName: 'baskets',
+      currentPage: 1,
+      desc: true,
+      loaded: false,
+      tableData: [],
+      perPage: 10,
+      sortCategory: 'sort_date',
+    },
+    product: {
+      productId: 0,
+      resourceName: 'product',
       currentPage: 1,
       desc: true,
       loaded: false,
@@ -44,26 +55,27 @@ class Application extends Component {
     this.setState({ authenticated: false });
   }
 
-  loadSpendingTable = async ({ desc, page, newestDate, oldestDate, sortCategory }) => {
+  loadSpendingTable = async ({ desc, page, newestDate, oldestDate, productId, resourceName, sortCategory, userId }) => {
     if (this.isAuthenticated()) {
-      const response = await BasketService.getBaskets({
-        sortCategory, newestDate, oldestDate, page, per_page: 10, desc
+      const fileService = resourceName === 'baskets' ? BasketService : ProductService;
+      const response = await fileService.getSpendingTable({
+        userId, sortCategory, newestDate, oldestDate, page, per_page: 10, desc, productId,
       });
       if (response.status !== 200) {
-        this.setState({ error: `${response.data.errors[0]} - try logging out and back in` });
+        alert(`error: ${response.data.errors[0]} - try logging out and back in`);
       } else {
         TokenHelper.set('jwt', response.headers.jwt);
         const newState = {
-          currentPage: page || this.state.baskets.currentPage,
+          currentPage: page || this.state[resourceName].currentPage,
           desc,
           loaded: true,
-          newestDate: response.headers.newest_date || this.state.baskets.newestDate,
-          oldestDate: response.headers.oldest_date || this.state.baskets.oldestDate,
+          newestDate: response.headers.newest_date || this.state[resourceName].newestDate,
+          oldestDate: response.headers.oldest_date || this.state[resourceName].oldestDate,
           tableData: response.data,
-          sortCategory: sortCategory || this.state.baskets.sortCategory,
-          totalPages: Math.ceil(response.headers.total / response.headers['per-page']) || this.state.baskets.totalPages,
+          sortCategory: sortCategory || this.state[resourceName].sortCategory,
+          totalPages: Math.ceil(response.headers.total / response.headers['per-page']) || this.state[resourceName].totalPages,
         };
-        this.updateResource('baskets', newState);
+        this.updateResource(resourceName, newState);
       }
     } else {
       alert('Your token has expired and you will need to log in again' );
