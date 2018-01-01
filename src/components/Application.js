@@ -19,6 +19,16 @@ class Application extends Component {
       perPage: 10,
       sortCategory: 'sort_date',
     },
+    products: {
+      resourceName: 'products',
+      currentPage: 1,
+      desc: false,
+      loaded: false,
+      tableData: [],
+      perPage: 10,
+      totalPages: 0,
+      sortCategory: 'sort_name',
+    },
     product: {
       productId: 0,
       resourceName: 'product',
@@ -97,6 +107,21 @@ class Application extends Component {
     }
   }
 
+  loadProducts = async ({ desc, page, userId, sortCategory }) => {
+    if (this.isAuthenticated()) {
+      const response = await ProductService.getProducts({ desc, page, userId, sortCategory, per_page: 10 });
+      const newState = {
+        currentPage: page || this.state.products.currentPage,
+        desc,
+        loaded: true,
+        tableData: response.data,
+        sortCategory: sortCategory || this.state.products.sortCategory,
+        totalPages: Math.ceil(response.headers.total / response.headers['per-page']) || this.state.product.totalPages,
+      };
+      this.updateResource('products', newState);
+    }
+  }
+
   updateResource = (resource, args) => {
     const newState = { [resource]: args };
     newState[resource].resourceName = resource;
@@ -107,11 +132,12 @@ class Application extends Component {
     return (
       <div className="container">
         <Main
-          topState={this.state}
           loadSpendingTable={this.loadSpendingTable}
           loadBasket={this.loadBasket}
+          loadProducts={this.loadProducts}
           logIn={this.logIn}
           logOut={this.logOut}
+          topState={this.state}
         />
         <Footer />
       </div>

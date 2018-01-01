@@ -9,7 +9,7 @@ import LogIn from './LogIn';
 import Welcome from './Welcome';
 import Navigation from './Navigation';
 
-const MainPage = ({ isAuthenticated, loadBasket, loadSpendingTable, logIn, logOut, topState }) => {
+const MainPage = ({ isAuthenticated, loadBasket, loadProducts, loadSpendingTable, logIn, logOut, topState }) => {
   const { authenticated, basket, baskets, product, products } = topState;
   const navigation = topState.authenticated ? (
     <Navigation authenticated={topState.authenticated} logOut={logOut} />
@@ -49,7 +49,10 @@ const MainPage = ({ isAuthenticated, loadBasket, loadSpendingTable, logIn, logOu
                 render={() => (
                   topState.authenticated === true ? (
                     <ProductsIndex
-                      data="This is the products index"
+                      isAuthenticated={isAuthenticated}
+                      loadSpendingTable={loadSpendingTable}
+                      loadProducts={loadProducts}
+                      {...products}
                     />
                   ) : (
                     <Redirect to="/login" />

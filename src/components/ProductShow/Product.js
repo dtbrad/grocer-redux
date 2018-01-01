@@ -34,7 +34,7 @@ class Product extends Component {
         <Paginate
           currentPage={this.props.currentPage}
           totalPages={this.props.totalPages}
-          loadSpendingTable={loadSpendingTable}
+          loadResource={loadSpendingTable}
           desc={this.props.desc}
           productId={productId}
           resourceName="product"

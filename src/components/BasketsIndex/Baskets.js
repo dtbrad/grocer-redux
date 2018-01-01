@@ -24,7 +24,7 @@ class Baskets extends Component {
         <Paginate
           currentPage={currentPage}
           totalPages={totalPages}
-          loadSpendingTable={loadSpendingTable}
+          loadResource={loadSpendingTable}
           desc={desc}
           sortCategory={sortCategory}
         />
