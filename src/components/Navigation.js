@@ -14,16 +14,16 @@ const Navigation = withRouter(({ authenticated, logOut, history }) => {
   return authenticated ? (
     <Navbar fluid>
       <Nav>
-        <LinkContainer key={1} to="/products">
-          <NavItem eventKey={1}> Product Index </NavItem>
+        <LinkContainer eventKey={1} exact to="/products">
+          <NavItem eventKey={2}> Product Index </NavItem>
         </LinkContainer>
-        <LinkContainer key={2} to="/shopping_trips">
-          <NavItem eventKey={2}>Shopping Trip History</NavItem>
+        <LinkContainer eventKey={3} exact to="/shopping_trips">
+          <NavItem eventKey={4}>Shopping Trip History</NavItem>
         </LinkContainer>
       </Nav>
       <Nav pullRight>
-        <NavItem key={3} disabled>Logged in as: {username}</NavItem>
-        <NavItem key={4} onClick={handleLogOut}>Log Out</NavItem>
+        <NavItem eventKey={5} disabled>Logged in as: {username}</NavItem>
+        <NavItem eventKey={6} onClick={handleLogOut}>Log Out</NavItem>
       </Nav>
     </Navbar>
   ) : (
