@@ -7,7 +7,7 @@ const BasketsTableRow = ({ basket }) => (
   <tr>
     <td>
       <Link
-        to={`/baskets/${basket.id}`}
+        to={`/shopping_trips/${basket.id}`}
       >
         <Moment add={{ hours: 7 }} format="ddd MM-D-YYYY h:mm a">
           { basket.transaction_date }

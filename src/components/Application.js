@@ -66,7 +66,22 @@ class Application extends Component {
         this.updateResource('baskets', newState);
       }
     } else {
-      alert('Your token has expired - try logging out and back in' );
+      alert('Your token has expired and you will need to log in again' );
+    }
+  }
+
+  loadBasket = async ({ basketId }) => {
+    if (this.isAuthenticated()) {
+      const response = await BasketService.getBasket({ basketId });
+      if (response.status !== 200) {
+        alert("error");
+      } else {
+        TokenHelper.set('jwt', response.headers.jwt);
+        const newState = response.data;
+        this.updateResource('basket', newState);
+      }
+    } else {
+      alert('Your token has expired and you will need to log in again' );
     }
   }
 
@@ -82,6 +97,7 @@ class Application extends Component {
         <Main
           topState={this.state}
           loadSpendingTable={this.loadSpendingTable}
+          loadBasket={this.loadBasket}
           logIn={this.logIn}
           logOut={this.logOut}
         />

@@ -16,8 +16,8 @@ class BasketService {
     return this.getResponse('baskets', args);
   }
 
-  static getBasket(args) {
-    return this.getResponse(`baskets/${args.id}`, args);
+  static getBasket({ basketId }) {
+    return this.getResponse(`baskets/${basketId}`);
   }
 
   static getChart(args) {

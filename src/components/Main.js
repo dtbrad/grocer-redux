@@ -3,11 +3,12 @@ import { Alert, Col, Grid, Row } from 'react-bootstrap';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import ProductsIndex from './ProductsIndex/Products';
 import Baskets from './BasketsIndex/Baskets';
+import Basket from './BasketShow/Basket';
 import LogIn from './LogIn';
 import Welcome from './Welcome';
 import Navigation from './Navigation';
 
-const MainPage = ({ isAuthenticated, loadSpendingTable, logIn, logOut, topState }) => {
+const MainPage = ({ isAuthenticated, loadBasket, loadSpendingTable, logIn, logOut, topState }) => {
   const { authenticated, basket, baskets, product, products } = topState;
   const navigation = topState.authenticated ? (
     <Navigation authenticated={topState.authenticated} logOut={logOut} />
@@ -40,19 +41,31 @@ const MainPage = ({ isAuthenticated, loadSpendingTable, logIn, logOut, topState 
                 )}
               />
               <Route
+                path="/shopping_trips/:id"
+                render={({ match }) => (
+                  authenticated === false ? (
+                    <Redirect to="/login" />
+                  ) : (
+                    <Basket
+                      {...basket}
+                      match={match}
+                      loadBasket={loadBasket}
+                    />
+                  )
+                )}
+              />
+              <Route
                 path="/shopping_trips"
-                render={() => {
-                  return (
+                render={() => (
                   topState.authenticated === true ? (
                     <Baskets
-                      isAuthenticated={isAuthenticated}
                       loadSpendingTable={loadSpendingTable}
                       {...baskets}
                     />
                   ) : (
                     <Redirect to="/login" />
                   )
-                )}}
+                )}
               />
               <Route
                 path="/login"
