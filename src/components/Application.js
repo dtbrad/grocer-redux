@@ -7,39 +7,41 @@ import TokenHelper from '../api/TokenHelper';
 import BasketService from '../api/BasketService';
 import ProductService from '../api/ProductService';
 
+const initialState = {
+  authenticated: false,
+  baskets: {
+    resourceName: 'baskets',
+    currentPage: 1,
+    desc: true,
+    loaded: false,
+    tableData: [],
+    perPage: 10,
+    sortCategory: 'sort_date',
+  },
+  products: {
+    resourceName: 'products',
+    currentPage: 1,
+    desc: false,
+    loaded: false,
+    tableData: [],
+    perPage: 10,
+    totalPages: 0,
+    sortCategory: 'sort_name',
+  },
+  product: {
+    productId: 0,
+    resourceName: 'product',
+    currentPage: 1,
+    desc: true,
+    loaded: false,
+    tableData: [],
+    perPage: 10,
+    sortCategory: 'sort_date',
+  },
+};
+
 class Application extends Component {
-  state = {
-    authenticated: false,
-    baskets: {
-      resourceName: 'baskets',
-      currentPage: 1,
-      desc: true,
-      loaded: false,
-      tableData: [],
-      perPage: 10,
-      sortCategory: 'sort_date',
-    },
-    products: {
-      resourceName: 'products',
-      currentPage: 1,
-      desc: false,
-      loaded: false,
-      tableData: [],
-      perPage: 10,
-      totalPages: 0,
-      sortCategory: 'sort_name',
-    },
-    product: {
-      productId: 0,
-      resourceName: 'product',
-      currentPage: 1,
-      desc: true,
-      loaded: false,
-      tableData: [],
-      perPage: 10,
-      sortCategory: 'sort_date',
-    },
-  };
+  state = initialState;
 
   componentDidMount = () => {
     this.isAuthenticated();
@@ -62,7 +64,7 @@ class Application extends Component {
 
   logOut = () => {
     TokenHelper.remove('jwt');
-    this.setState({ authenticated: false });
+    this.setState(initialState);
   }
 
   loadSpendingTable = async ({ desc, page, newestDate, oldestDate, productId, resourceName, sortCategory, userId }) => {
