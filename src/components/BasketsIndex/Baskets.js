@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Panel } from 'react-bootstrap';
 import BasketsTable from './BasketsTable';
+import SpendingFormContainer from '../SharedComponents/SpendingFormContainer';
 import Paginate from '../SharedComponents/Paginate';
 
 class Baskets extends Component {
@@ -11,9 +12,15 @@ class Baskets extends Component {
   }
 
   render() {
-    const { currentPage, desc, loadSpendingTable, tableData, sortCategory, totalPages, } = this.props;
+    const { currentPage, desc, loadSpendingTable, newestDate, oldestDate, tableData, sortCategory, totalPages, unit } = this.props;
     return (
       <div>
+        <SpendingFormContainer
+          oldestDate={oldestDate}
+          newestDate={newestDate}
+          unit={unit}
+          loadSpendingTable={loadSpendingTable}
+        />
         <Panel default>
           <BasketsTable
             tableData={tableData}

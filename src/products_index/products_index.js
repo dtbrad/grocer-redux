@@ -70,9 +70,9 @@ class ProductsIndex extends Component {
 
 
   render() {
-    // if (this.state.loaded !== true) {
-    //   return <h4>Loading...</h4>;
-    // }
+    if (this.state.loaded !== true) {
+      return <h4>Loading...</h4>;
+    }
     const chart = this.state.chartData ? (
       <TotalSpentChart chartData={this.state.chartData} />) : (
       null

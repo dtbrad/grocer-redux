@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import moment from 'moment';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
 import Main from './Main';
@@ -81,8 +82,8 @@ class Application extends Component {
           currentPage: page || this.state[resourceName].currentPage,
           desc,
           loaded: true,
-          newestDate: response.headers.newest_date || this.state[resourceName].newestDate,
-          oldestDate: response.headers.oldest_date || this.state[resourceName].oldestDate,
+          newestDate: moment(response.headers.newestdate || this.state[resourceName].newestDate),
+          oldestDate: moment(response.headers.oldestdate || this.state[resourceName].oldestDate),
           tableData: response.data,
           sortCategory: sortCategory || this.state[resourceName].sortCategory,
           totalPages: Math.ceil(response.headers.total / response.headers['per-page']) || this.state[resourceName].totalPages,

@@ -10,6 +10,9 @@ class Products extends Component {
   }
 
   render() {
+    if (this.props.loaded !== true) {
+      return <h4>Loading...</h4>;
+    }
     const userId = TokenHelper.userId('jwt');
     return (
       <div>
