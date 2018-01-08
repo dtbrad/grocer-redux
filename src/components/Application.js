@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import moment from 'moment';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
 import Main from './Main';
@@ -43,17 +42,17 @@ class Application extends Component {
     this.setState(initialState);
   }
 
-  loadSpendingTable = async ({ desc, currentPage, newestDate, oldestDate, productId, resourceName, sortCategory, userId }) => {
+  loadSpendingTable = async ({ desc, page, newestDate, oldestDate, productId, resourceName, sortCategory, userId }) => {
     const fileService = resourceName === 'baskets' ? BasketService : ProductService;
     const response = await fileService.getSpendingTable({
-      userId, sortCategory, newestDate, oldestDate, currentPage, per_page: 10, desc, productId,
+      userId, sortCategory, newestDate, oldestDate, page, per_page: 10, desc, productId,
     });
     if (response.status !== 200) {
       alert(`error: ${response.data.errors[0]} - try logging out and back in`);
     } else {
       TokenHelper.set('jwt', response.headers.jwt);
       const newState = {
-        currentPage: currentPage || this.state[resourceName].currentPage,
+        page: page || this.state[resourceName].page,
         desc,
         loaded: true,
         newestDate: response.headers.newestdate || newestDate,
@@ -80,7 +79,7 @@ class Application extends Component {
   loadProducts = async ({ desc, page, userId, sortCategory }) => {
     const response = await ProductService.getProducts({ desc, page, userId, sortCategory, per_page: 10 });
     const newState = {
-      currentPage: page || this.state.products.currentPage,
+      page: page || this.state.products.page,
       desc,
       loaded: true,
       tableData: response.data,

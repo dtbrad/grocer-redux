@@ -13,17 +13,17 @@ const BasketsTable = ({ oldestDate, newestDate, tableData, desc, loadSpendingTab
         <tr style={{ color: '#07C' }}>
           <th
             role="button"
-            onClick={() => loadSpendingTable({ oldestDate, newestDate, resourceName: 'baskets', currentPage: 1, desc: !desc, sortCategory: 'sort_date' })}
+            onClick={() => loadSpendingTable({ oldestDate, newestDate, resourceName: 'baskets', page: 1, desc: !desc, sortCategory: 'sort_date' })}
           > Date
           </th>
           <th
             role="button"
-            onClick={() => loadSpendingTable({ oldestDate, newestDate, resourceName: 'baskets', currentPage: 1, desc: !desc, sortCategory: 'sort_items' })}
+            onClick={() => loadSpendingTable({ oldestDate, newestDate, resourceName: 'baskets', page: 1, desc: !desc, sortCategory: 'sort_items' })}
           > Items
           </th>
           <th
             role="button"
-            onClick={() => loadSpendingTable({ oldestDate, newestDate, resourceName: 'baskets', currentPage: 1, desc: !desc, sortCategory: 'sort_total' })}
+            onClick={() => loadSpendingTable({ oldestDate, newestDate, resourceName: 'baskets', page: 1, desc: !desc, sortCategory: 'sort_total' })}
           > Total
           </th>
         </tr>

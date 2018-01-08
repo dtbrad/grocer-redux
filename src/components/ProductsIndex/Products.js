@@ -1,42 +1,40 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Panel } from 'react-bootstrap';
 import ProductsTable from './ProductsTable';
 import TokenHelper from '../../api/TokenHelper';
 import Paginate from '../SharedComponents/Paginate';
 
-class Products extends Component {
-  componentDidMount = () => {
-    this.props.loadProducts({ desc: false, sortCategory: 'sort_name' });
+const Products = (props) => {
+  if (props.loaded !== true) {
+    return <h4>Loading...</h4>;
   }
-
-  render() {
-    if (this.props.loaded !== true) {
-      return <h4>Loading...</h4>;
-    }
-    const userId = TokenHelper.userId('jwt');
-    return (
-      <div>
-        <Panel default>
-          <ProductsTable
-            tableData={this.props.tableData}
-            desc={this.props.desc}
-            loadProducts={this.props.loadProducts}
-            loadSpendingTable={this.props.loadSpendingTable}
-          />
-        </Panel>
-        <Paginate
-          loadProducts={this.props.loadProducts}
-          currentPage={this.props.currentPage}
-          totalPages={this.props.totalPages}
-          loadResource={this.props.loadProducts}
-          desc={this.props.desc}
-          resourceName={this.props.resourceName}
-          userId={userId}
-          sortCategory={this.props.sortCategory}
+  const userId = TokenHelper.userId('jwt');
+  return (
+    <div>
+      <Panel default>
+        <ProductsTable
+          tableData={props.tableData}
+          desc={props.desc}
+          loadProducts={props.loadProducts}
+          loadSpendingTable={props.loadSpendingTable}
         />
-      </div>
-    );
-  }
-}
+      </Panel>
+      <Paginate
+        loadProducts={props.loadProducts}
+        page={props.page}
+        totalPages={props.totalPages}
+        loadResource={props.loadProducts}
+        desc={props.desc}
+        resourceName={props.resourceName}
+        userId={userId}
+        sortCategory={props.sortCategory}
+      />
+    </div>
+  );
+};
+
+Products.defaultProps = {
+  page: 1,
+};
 
 export default Products;

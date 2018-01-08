@@ -32,7 +32,7 @@ class Product extends Component {
           />
         </Panel>
         <Paginate
-          currentPage={this.props.currentPage}
+          page={this.props.page}
           totalPages={this.props.totalPages}
           loadResource={loadSpendingTable}
           desc={this.props.desc}

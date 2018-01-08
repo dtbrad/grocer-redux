@@ -27,3 +27,7 @@ footer {
 .form-group {
   width: 100%;
 }
+
+.btn:focus {
+  outline: none;
+}
