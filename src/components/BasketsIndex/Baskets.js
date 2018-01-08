@@ -41,6 +41,7 @@ const Baskets = ({ page, desc, loaded, loadSpendingTable, newestDate, oldestDate
 
 Baskets.defaultProps = {
   page: 1,
+  resourceName: 'baskets',
 };
 
 export default Baskets;

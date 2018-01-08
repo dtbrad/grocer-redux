@@ -1,10 +1,9 @@
 import React from 'react';
 import ProductTableRow from './ProductTableRow';
 
-const ProductTable = (props) => {
-  const { tableData, desc, loadSpendingTable, resourceName, productId, userId } = props;
-  const productTableContent = tableData.map(line_item => (
-    <ProductTableRow key={line_item.id} line_item={line_item} />
+const ProductTable = ({ tableData, desc, loadSpendingTable, resourceName, productId, userId }) => {
+  const productTableContent = tableData.map(lineItem => (
+    <ProductTableRow key={lineItem.id} line_item={lineItem} />
   ));
 
   return (
