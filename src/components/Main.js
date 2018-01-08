@@ -9,7 +9,7 @@ import LogIn from './LogIn';
 import Welcome from './Welcome';
 import Navigation from './Navigation';
 
-const MainPage = ({ isAuthenticated, loadBasket, loadProducts, loadSpendingTable, logIn, logOut, topState }) => {
+const MainPage = ({ loadBasket, loadProducts, loadSpendingTable, logIn, logOut, topState }) => {
   const { authenticated, basket, baskets, product, products } = topState;
   const navigation = topState.authenticated ? (
     <Navigation authenticated={topState.authenticated} logOut={logOut} />
@@ -36,7 +36,6 @@ const MainPage = ({ isAuthenticated, loadBasket, loadProducts, loadSpendingTable
                     <Redirect to="/login" />
                   ) : (
                     <Product
-                      isAuthenticated={isAuthenticated}
                       loadSpendingTable={loadSpendingTable}
                       match={match}
                       {...product}
@@ -49,7 +48,6 @@ const MainPage = ({ isAuthenticated, loadBasket, loadProducts, loadSpendingTable
                 render={() => (
                   topState.authenticated === true ? (
                     <ProductsIndex
-                      isAuthenticated={isAuthenticated}
                       loadSpendingTable={loadSpendingTable}
                       loadProducts={loadProducts}
                       {...products}

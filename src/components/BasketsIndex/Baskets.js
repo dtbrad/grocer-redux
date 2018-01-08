@@ -1,43 +1,46 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Panel } from 'react-bootstrap';
 import BasketsTable from './BasketsTable';
 import SpendingFormContainer from '../SharedComponents/SpendingFormContainer';
 import Paginate from '../SharedComponents/Paginate';
 
-class Baskets extends Component {
-  componentDidMount = () => {
-    if (this.props.tableData.length === 0) {
-      this.props.loadSpendingTable({ resourceName: 'baskets', desc: true, sortCategory: this.props.sortCategory });
-    }
+const Baskets = ({ currentPage, desc, loaded, loadSpendingTable, newestDate, oldestDate, tableData, resourceName, sortCategory, totalPages, unit }) => {
+  if (loaded !== true) {
+    return <h4>Loading...</h4>;
   }
-
-  render() {
-    const { currentPage, desc, loadSpendingTable, newestDate, oldestDate, tableData, sortCategory, totalPages, unit } = this.props;
-    return (
-      <div>
-        <SpendingFormContainer
+  return (
+    <div>
+      <SpendingFormContainer
+        oldestDate={oldestDate}
+        newestDate={newestDate}
+        unit={unit}
+        loadSpendingTable={loadSpendingTable}
+      />
+      <Panel default>
+        <BasketsTable
           oldestDate={oldestDate}
           newestDate={newestDate}
-          unit={unit}
+          tableData={tableData}
+          desc={desc}
           loadSpendingTable={loadSpendingTable}
         />
-        <Panel default>
-          <BasketsTable
-            tableData={tableData}
-            desc={desc}
-            loadSpendingTable={loadSpendingTable}
-          />
-        </Panel>
-        <Paginate
-          currentPage={currentPage}
-          totalPages={totalPages}
-          loadResource={loadSpendingTable}
-          desc={desc}
-          sortCategory={sortCategory}
-        />
-      </div>
-    );
-  }
-}
+      </Panel>
+      <Paginate
+        oldestDate={oldestDate}
+        newestDate={newestDate}
+        currentPage={currentPage}
+        totalPages={totalPages}
+        loadResource={loadSpendingTable}
+        desc={desc}
+        sortCategory={sortCategory}
+        resourceName={resourceName}
+      />
+    </div>
+  );
+};
+
+Baskets.defaultProps = {
+  currentPage: 1,
+};
 
 export default Baskets;

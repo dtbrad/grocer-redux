@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Col, FormControl, FormGroup, Panel } from 'react-bootstrap';
+import { Alert, Button, Col, FormControl, FormGroup, Panel } from 'react-bootstrap';
 import UserService from '../api/UserService';
 
 class LogIn extends Component {
@@ -8,6 +8,7 @@ class LogIn extends Component {
     emailError: true,
     password: '',
     passwordError: true,
+    loading: null,
   };
 
   validateEmail = () => {
@@ -51,12 +52,13 @@ class LogIn extends Component {
   handleSubmit = async (event) => {
     event.preventDefault();
     if (this.state.emailError === false && this.state.passwordError === false) {
+      await this.setState({ loading: true });
       const response = await UserService.loginUser({
         email: this.state.email,
         password: this.state.password,
       });
       if (response.status === 200) {
-        this.props.logIn(response.headers.jwt);
+        await this.props.logIn(response.headers.jwt);
         this.props.history.push('/shopping_trips');
       } else {
         alert(`Server says: "${response.data.message[0]}"`);
@@ -67,6 +69,12 @@ class LogIn extends Component {
   }
 
   render() {
+    const loadingMessage = this.state.loading === null ? (
+      null
+    ) : (
+      <Alert bsStyle="warning" className="text-center"> Loading... </Alert>
+    );
+
     return (
       <Col md={6} mdOffset={3}>
         <Panel>
@@ -103,6 +111,7 @@ class LogIn extends Component {
             </Button>
           </form>
         </Panel>
+        { loadingMessage }
       </Col>
     );
   }

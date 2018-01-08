@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
+import moment from 'moment';
 import SpendingFormView from './SpendingFormView';
 
 class SpendingFormContainer extends Component {
   state = {
-    oldestDate: this.props.oldestDate,
-    newestDate: this.props.newestDate,
+    oldestDate: moment(this.props.oldestDate),
+    newestDate: moment(this.props.newestDate),
     unit: this.props.unit || 'month',
   };
 
   componentWillReceiveProps = (nextProps) => {
     this.setState({
-      oldestDate: nextProps.oldestDate,
-      newestDate: nextProps.newestDate,
+      oldestDate: moment(nextProps.oldestDate),
+      newestDate: moment(nextProps.newestDate),
       unit: nextProps.unit || 'month',
     });
   }
@@ -33,7 +34,8 @@ class SpendingFormContainer extends Component {
 
   submitForm = (f) => {
     f.preventDefault()
-    console.log(this.state)
+    const args = { oldestDate: this.state.oldestDate._d, newestDate: this.state.newestDate._d, unit: this.state.unit, resourceName: 'baskets', desc: true, currentPage: 1 }
+    this.props.loadSpendingTable(args);
   }
 
   render() {

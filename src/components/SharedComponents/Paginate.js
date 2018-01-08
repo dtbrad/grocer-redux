@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Paginate = ({ currentPage, totalPages, loadResource, desc, sortCategory }) => {
+const Paginate = ({ currentPage, totalPages, loadResource, desc, oldestDate, newestDate, sortCategory }) => {
   const previous = currentPage <= 1 ? 'hidden' : 'btn btn-default';
   const last = currentPage === totalPages ? 'hidden' : 'btn btn-default';
   const next = currentPage === totalPages || (currentPage === (totalPages - 1)) ? 'hidden' : 'btn btn-default';
@@ -10,11 +10,11 @@ const Paginate = ({ currentPage, totalPages, loadResource, desc, sortCategory })
   return (
     <div className="text-center">
       <div className="btn-group">
-        <button className={previous} onClick={() => loadResource({ sortCategory, resourceName: 'baskets', page: 1, desc })}>1</button>
-        <button className={previous} onClick={() => loadResource({ sortCategory, resourceName: 'baskets', page: (currentPage - 1), desc })}>Prev</button>
+        <button className={previous} onClick={() => loadResource({ oldestDate, newestDate, sortCategory, resourceName: 'baskets', currentPage: 1, desc })}>1</button>
+        <button className={previous} onClick={() => loadResource({ oldestDate, newestDate, sortCategory, resourceName: 'baskets', currentPage: (currentPage - 1), desc })}>Prev</button>
         <button className="btn btn-primary">{currentPage}</button>
-        <button className={next} onClick={() => loadResource({ sortCategory, resourceName: 'baskets', page: (currentPage + 1), desc })}>Next</button>
-        <button className={last} onClick={() => loadResource({ sortCategory, resourceName: 'baskets', page: totalPages, desc })}>{totalPages}</button>
+        <button className={next} onClick={() => loadResource({ oldestDate, newestDate, sortCategory, resourceName: 'baskets', currentPage: (currentPage + 1), desc })}>Next</button>
+        <button className={last} onClick={() => loadResource({ oldestDate, newestDate, sortCategory, resourceName: 'baskets', currentPage: totalPages, desc })}>{totalPages}</button>
       </div>
     </div>
   );
