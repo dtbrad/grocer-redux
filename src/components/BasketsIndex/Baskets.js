@@ -3,18 +3,23 @@ import { Panel } from 'react-bootstrap';
 import BasketsTable from './BasketsTable';
 import SpendingFormContainer from '../SharedComponents/SpendingFormContainer';
 import Paginate from '../SharedComponents/Paginate';
+import BasketsChart from './BasketsChart';
 
-const Baskets = ({ page, desc, loaded, loadSpendingTable, newestDate, oldestDate, tableData, resourceName, sortCategory, totalPages, unit }) => {
+const Baskets = ({ chartData, page, desc, loaded, loadSpendingTable, loadChart, loadSpendingTableAndChart, newestDate, oldestDate, tableData, resourceName, sortCategory, totalPages, unit }) => {
   if (loaded !== true) {
     return <h4>Loading...</h4>;
   }
+const chart = chartData ? <BasketsChart chartData={chartData} unit={unit} /> : null;
   return (
     <div>
+      { chart }
       <SpendingFormContainer
         oldestDate={oldestDate}
         newestDate={newestDate}
         unit={unit}
         loadSpendingTable={loadSpendingTable}
+        loadChart={loadChart}
+        loadSpendingTableAndChart={loadSpendingTableAndChart}
         resourceName={resourceName}
       />
       <Panel default>

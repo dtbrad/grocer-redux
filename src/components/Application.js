@@ -26,8 +26,8 @@ class Application extends Component {
     this.setState({ authenticated: TokenHelper.tokenCurrent('jwt') });
   }
 
-  loadBasketsAndProducts = () => {
-    this.loadSpendingTable({ resourceName: 'baskets', desc: true, sortCategory: 'sort_date' });
+  loadBasketsAndProducts = async () => {
+    await this.loadSpendingTableAndChart({ resourceName: 'baskets', desc: true, sortCategory: 'sort_date' });
     this.loadProducts({ desc: false, sortCategory: 'sort_name', page: 1 });
   }
 
@@ -61,6 +61,25 @@ class Application extends Component {
       };
       this.updateResource(args.resourceName, newState);
     }
+  }
+
+  loadChart = async (args) => {
+    const fileService = args.resourceName === 'baskets' ? BasketService : ProductService;
+    const response = await fileService.getChart(args);
+    if (response.status === 400) {
+      alert("error!");
+    } else {
+      TokenHelper.set('jwt', response.headers.jwt);
+      const newState = this.state[args.resourceName];
+      newState.chartData = response.data.data;
+      newState.unit = response.data.unit;
+      this.updateResource(args.resourceName, newState);
+    }
+  }
+
+  loadSpendingTableAndChart = async (args) => {
+    await this.loadSpendingTable(args);
+    this.loadChart(args);
   }
 
   loadBasket = async ({ basketId }) => {
@@ -98,6 +117,8 @@ class Application extends Component {
       <div className="container">
         <Main
           loadSpendingTable={this.loadSpendingTable}
+          loadChart={this.loadChart}
+          loadSpendingTableAndChart={this.loadSpendingTableAndChart}
           loadBasket={this.loadBasket}
           loadProducts={this.loadProducts}
           logIn={this.logIn}

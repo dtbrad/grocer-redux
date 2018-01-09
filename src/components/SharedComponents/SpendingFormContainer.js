@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import moment from 'moment';
+import DeepEqual from 'deep-equal';
 import SpendingFormView from './SpendingFormView';
 
 class SpendingFormContainer extends Component {
@@ -33,9 +34,13 @@ class SpendingFormContainer extends Component {
    }
 
   submitForm = (f) => {
-    f.preventDefault()
+    f.preventDefault();
     const args = { oldestDate: this.state.oldestDate._d, newestDate: this.state.newestDate._d, unit: this.state.unit, resourceName: this.props.resourceName, desc: true, page: 1, productId: this.props.productId, userId: this.props.userId }
-    this.props.loadSpendingTable(args);
+    if (DeepEqual(this.state.oldestDate, moment(this.props.oldestDate)) && DeepEqual(this.state.newestDate, moment(this.props.newestDate))) {
+      this.props.loadChart(args);
+    } else {
+      this.props.loadSpendingTableAndChart(args);
+    }
   }
 
   render() {
