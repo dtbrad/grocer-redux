@@ -58,6 +58,8 @@ class Application extends Component {
         tableData: response.data,
         sortCategory: args.sortCategory,
         totalPages: Math.ceil(response.headers.total / response.headers['per-page']),
+        chartData: args.chartData,
+        unit: args.unit,
       };
       this.updateResource(args.resourceName, newState);
     }

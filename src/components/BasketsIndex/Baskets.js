@@ -9,7 +9,7 @@ const Baskets = ({ chartData, page, desc, loaded, loadSpendingTable, loadChart, 
   if (loaded !== true) {
     return <h4>Loading...</h4>;
   }
-const chart = chartData ? <BasketsChart chartData={chartData} unit={unit} /> : null;
+const chart = chartData ? <BasketsChart chartData={chartData} unit={unit} loadSpendingTableAndChart={loadSpendingTableAndChart} isPureConfig /> : null;
   return (
     <div>
       { chart }
@@ -29,6 +29,8 @@ const chart = chartData ? <BasketsChart chartData={chartData} unit={unit} /> : n
           tableData={tableData}
           desc={desc}
           loadSpendingTable={loadSpendingTable}
+          chartData={chartData}
+          unit={unit}
         />
       </Panel>
       <Paginate
@@ -40,6 +42,8 @@ const chart = chartData ? <BasketsChart chartData={chartData} unit={unit} /> : n
         desc={desc}
         sortCategory={sortCategory}
         resourceName={resourceName}
+        chartData={chartData}
+        unit={unit}
       />
     </div>
   );

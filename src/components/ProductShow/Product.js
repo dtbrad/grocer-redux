@@ -13,7 +13,8 @@ const Product = ({ loaded, page, chartData, totalPages, loadSpendingTable, loadC
   const productName = (tableData && tableData.length) ? tableData[0].product_name : null;
   const userId = TokenHelper.userId('jwt');
   const productId = match ? match.params.id : null;
-  const chart = chartData ? <ProductChart chartData={chartData} unit={unit} productName={productName} /> : null;
+  const chart = chartData ? <ProductChart productId={productId} userId={userId} chartData={chartData} unit={unit} productName={productName} loadSpendingTableAndChart={loadSpendingTableAndChart} /> : null;
+  // debugger;
   return (
     <div>
       { chart }
@@ -39,6 +40,8 @@ const Product = ({ loaded, page, chartData, totalPages, loadSpendingTable, loadC
           resourceName={resourceName}
           oldestDate={oldestDate}
           newestDate={newestDate}
+          chartData={chartData}
+          unit={unit}
         />
       </Panel>
       <Paginate
@@ -52,6 +55,8 @@ const Product = ({ loaded, page, chartData, totalPages, loadSpendingTable, loadC
         sortCategory={sortCategory}
         oldestDate={oldestDate}
         newestDate={newestDate}
+        chartData={chartData}
+        unit={unit}
       />
     </div>
   );

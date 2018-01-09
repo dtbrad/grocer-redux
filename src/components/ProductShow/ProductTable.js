@@ -1,7 +1,7 @@
 import React from 'react';
 import ProductTableRow from './ProductTableRow';
 
-const ProductTable = ({ tableData, desc, loadSpendingTable, oldestDate, newestDate, resourceName, productId, userId }) => {
+const ProductTable = ({ chartData, unit, tableData, desc, loadSpendingTable, oldestDate, newestDate, resourceName, productId, userId }) => {
   const productTableContent = tableData.map(lineItem => (
     <ProductTableRow key={lineItem.id} line_item={lineItem} />
   ));
@@ -12,27 +12,27 @@ const ProductTable = ({ tableData, desc, loadSpendingTable, oldestDate, newestDa
         <tr style={{ color: '#07C' }}>
           <th
             role="button"
-            onClick={() => loadSpendingTable({ oldestDate, newestDate, productId, userId, resourceName, page: 1, desc: !desc, sortCategory: 'sort_date' })}
+            onClick={() => loadSpendingTable({ chartData, unit, oldestDate, newestDate, productId, userId, resourceName, page: 1, desc: !desc, sortCategory: 'sort_date' })}
           > Date
           </th>
           <th
             role="button"
-            onClick={() => loadSpendingTable({ oldestDate, newestDate, productId, userId, resourceName, page: 1, desc: !desc, sortCategory: 'price_cents' })}
+            onClick={() => loadSpendingTable({ chartData, unit, oldestDate, newestDate, productId, userId, resourceName, page: 1, desc: !desc, sortCategory: 'price_cents' })}
           > Price
           </th>
           <th
             role="button"
-            onClick={() => loadSpendingTable({ oldestDate, newestDate, productId, userId, resourceName, page: 1, desc: !desc, sortCategory: 'quantity' })}
+            onClick={() => loadSpendingTable({ chartData, unit, oldestDate, newestDate, productId, userId, resourceName, page: 1, desc: !desc, sortCategory: 'quantity' })}
           > Qty Purchased
           </th>
           <th
             role="button"
-            onClick={() => loadSpendingTable({ oldestDate, newestDate, productId, userId, resourceName, page: 1, desc: !desc, sortCategory: 'weight' })}
+            onClick={() => loadSpendingTable({ chartData, unit, oldestDate, newestDate, productId, userId, resourceName, page: 1, desc: !desc, sortCategory: 'weight' })}
           > Weight
           </th>
           <th
             role="button"
-            onClick={() => loadSpendingTable({ oldestDate, newestDate, productId, userId, resourceName, page: 1, desc: !desc, sortCategory: 'total_cents' })}
+            onClick={() => loadSpendingTable({ chartData, unit, oldestDate, newestDate, productId, userId, resourceName, page: 1, desc: !desc, sortCategory: 'total_cents' })}
           > Total
           </th>
         </tr>

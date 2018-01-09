@@ -1,51 +1,84 @@
-import React from 'react';
+import React, { Component } from 'react';
 import ReactHighcharts from 'react-highcharts';
+import moment from 'moment';
+import DeepEqual from 'deep-equal';
 
-const BasketsChart = (props) => {
-  if (!props.chartData) {
-    return (
-      <div>Loading...</div>
-    );
+class BasketsChart extends Component {
+  shouldComponentUpdate(nextProps) {
+    return !DeepEqual(this.props, nextProps);
   }
 
-  const formattedData = props.chartData.map(x => (
-    [Date.parse(x[0]), x[1] / 100]
-  ));
-  const spendingTitle = `spending by ${props.unit}`;
-  const properDateFormat = props.unit === 'month' ? '%B %Y' : '%B %d, %Y';
-  const properDateIntro = (props.unit === 'month' || props.unit === 'day') ? '' : 'Week of';
+  prepRangeforLoad(timestamp) {
+    const { unit } = this.props;
+    const newUnit = unit === 'month' ? 'week' : 'day';
+    const oldestDate = moment(timestamp);
+    const newestDate = moment(oldestDate).add(1, unit);
+    if (unit !== 'day') { this.props.loadSpendingTableAndChart({ resourceName: 'baskets', desc: true, sortCategory: 'sort_date', oldestDate, newestDate, unit: newUnit }) }
+  }
 
-  const config = {
-    chart: { type: 'spline' },
-    title: {
-      text: 'Spending History',
-    },
-    yAxis: {
+
+  render() {
+    const { chartData, unit } = this.props;
+    if (!chartData) {
+      return (
+        <div>Loading...</div>
+      );
+    }
+
+    const formattedData = chartData.map(x => (
+      [Date.parse(x[0]), x[1] / 100]
+    ));
+    const componentScope = this;
+    const spendingTitle = `spending by ${unit}`;
+    const properDateFormat = unit === 'month' ? '%B %Y' : '%B %d, %Y';
+    const properDateIntro = (unit === 'month' || unit === 'day') ? '' : 'Week of';
+
+    const config = {
+      chart: { type: 'spline' },
       title: {
-        text: 'Amount Spent ($)',
+        text: 'Spending History',
       },
-    },
-    xAxis: { type: 'datetime' },
-    series: [{
-      name: spendingTitle,
-      data: formattedData,
-    },
-    ],
-    tooltip: {
-      formatter() {
-        return (
-          `${properDateIntro} ${ReactHighcharts.Highcharts.dateFormat(properDateFormat, this.point.x)} - $${this.point.y}`
-        );
+      yAxis: {
+        title: {
+          text: 'Amount Spent ($)',
+        },
       },
-    },
-    credits: { enabled: false },
-  };
+      xAxis: { type: 'datetime' },
+      series: [{
+        name: spendingTitle,
+        data: formattedData,
+      },
+      ],
+      tooltip: {
+        formatter() {
+          return (
+            `${properDateIntro} ${ReactHighcharts.Highcharts.dateFormat(properDateFormat, this.point.x)} - $${this.point.y}`
+          );
+        },
+      },
+      plotOptions: {
+        series: {
+          events: {
+            click(event) {
+              if (event.point.y > 0) {
+                componentScope.prepRangeforLoad(event.point.x);
+              }
+            },
+            legendItemClick() {
+              return false;
+            },
+          },
+        },
+      },
+      credits: { enabled: false },
+    };
 
-  return (
-    <div>
-      <ReactHighcharts config={config} isPureConfig />
-    </div>
-  );
+    return (
+      <div>
+        <ReactHighcharts config={config} isPureConfig />
+      </div>
+    );
+  }
 }
 
 
