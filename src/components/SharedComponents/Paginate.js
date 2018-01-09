@@ -4,7 +4,6 @@ const Paginate = ({ page, totalPages, loadResource, desc, oldestDate, newestDate
   const previous = page <= 1 ? 'hidden' : 'btn btn-default';
   const last = page === totalPages ? 'hidden' : 'btn btn-default';
   const next = page === totalPages || (page === (totalPages - 1)) ? 'hidden' : 'btn btn-default';
-
   if (totalPages <= 1) { return null; }
 
   return (

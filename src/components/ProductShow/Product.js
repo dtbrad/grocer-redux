@@ -20,6 +20,9 @@ const Product = ({ page, totalPages, loadSpendingTable, oldestDate, newestDate, 
           newestDate={newestDate}
           unit={unit}
           loadSpendingTable={loadSpendingTable}
+          resourceName={resourceName}
+          productId={productId}
+          userId={userId}
         />
         <ProductTable
           tableData={tableData}
@@ -28,6 +31,8 @@ const Product = ({ page, totalPages, loadSpendingTable, oldestDate, newestDate, 
           productId={productId}
           userId={userId}
           resourceName={resourceName}
+          oldestDate={oldestDate}
+          newestDate={newestDate}
         />
       </Panel>
       <Paginate
@@ -39,6 +44,8 @@ const Product = ({ page, totalPages, loadSpendingTable, oldestDate, newestDate, 
         resourceName={resourceName}
         userId={userId}
         sortCategory={sortCategory}
+        oldestDate={oldestDate}
+        newestDate={newestDate}
       />
     </div>
   );
@@ -46,7 +53,7 @@ const Product = ({ page, totalPages, loadSpendingTable, oldestDate, newestDate, 
 
 Product.defaultProps = {
   page: 1,
-  resourceName: 'products'
+  resourceName: 'products',
 };
 
 export default Product;

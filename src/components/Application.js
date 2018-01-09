@@ -20,15 +20,15 @@ class Application extends Component {
   componentDidMount = async () => {
     await this.setAuthStatus();
     if (this.state.authenticated) { this.loadBasketsAndProducts(); }
-  }
+  } // else router will redirect to welcome page with link to login page
 
   setAuthStatus = () => {
     this.setState({ authenticated: TokenHelper.tokenCurrent('jwt') });
   }
 
   loadBasketsAndProducts = () => {
-    this.loadSpendingTable({ resourceName: 'baskets', desc: true, sortCategory: this.state.baskets.sortCategory });
-    this.loadProducts({ desc: false, sortCategory: 'sort_name' });
+    this.loadSpendingTable({ resourceName: 'baskets', desc: true, sortCategory: 'sort_date' });
+    this.loadProducts({ desc: false, sortCategory: 'sort_name', page: 1 });
   }
 
   logIn = async (token) => {
@@ -42,26 +42,24 @@ class Application extends Component {
     this.setState(initialState);
   }
 
-  loadSpendingTable = async ({ desc, page, newestDate, oldestDate, productId, resourceName, sortCategory, userId }) => {
-    const fileService = resourceName === 'baskets' ? BasketService : ProductService;
-    const response = await fileService.getSpendingTable({
-      userId, sortCategory, newestDate, oldestDate, page, per_page: 10, desc, productId,
-    });
+  loadSpendingTable = async (args) => {
+    const fileService = args.resourceName === 'baskets' ? BasketService : ProductService;
+    const response = await fileService.getSpendingTable(args);
     if (response.status !== 200) {
       alert(`error: ${response.data.errors[0]} - try logging out and back in`);
     } else {
       TokenHelper.set('jwt', response.headers.jwt);
       const newState = {
-        page: page || this.state[resourceName].page,
-        desc,
+        page: args.page,
+        desc: args.desc,
         loaded: true,
-        newestDate: response.headers.newestdate || newestDate,
-        oldestDate: response.headers.oldestdate || oldestDate,
+        newestDate: response.headers.newestdate || args.newestDate,
+        oldestDate: response.headers.oldestdate || args.oldestDate,
         tableData: response.data,
-        sortCategory: sortCategory || this.state[resourceName].sortCategory,
-        totalPages: Math.ceil(response.headers.total / response.headers['per-page']) || this.state[resourceName].totalPages,
+        sortCategory: args.sortCategory,
+        totalPages: Math.ceil(response.headers.total / response.headers['per-page']),
       };
-      this.updateResource(resourceName, newState);
+      this.updateResource(args.resourceName, newState);
     }
   }
 
@@ -77,14 +75,14 @@ class Application extends Component {
   }
 
   loadProducts = async ({ desc, page, userId, sortCategory }) => {
-    const response = await ProductService.getProducts({ desc, page, userId, sortCategory, per_page: 10 });
+    const response = await ProductService.getProducts({ desc, page, userId, sortCategory });
     const newState = {
-      page: page || this.state.products.page,
+      page,
       desc,
       loaded: true,
       tableData: response.data,
-      sortCategory: sortCategory || this.state.products.sortCategory,
-      totalPages: Math.ceil(response.headers.total / response.headers['per-page']) || this.state.product.totalPages,
+      sortCategory,
+      totalPages: Math.ceil(response.headers.total / response.headers['per-page']),
     };
     this.updateResource('products', newState);
   }

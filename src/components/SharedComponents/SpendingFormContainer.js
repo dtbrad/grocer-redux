@@ -34,7 +34,7 @@ class SpendingFormContainer extends Component {
 
   submitForm = (f) => {
     f.preventDefault()
-    const args = { oldestDate: this.state.oldestDate._d, newestDate: this.state.newestDate._d, unit: this.state.unit, resourceName: 'baskets', desc: true, page: 1 }
+    const args = { oldestDate: this.state.oldestDate._d, newestDate: this.state.newestDate._d, unit: this.state.unit, resourceName: this.props.resourceName, desc: true, page: 1, productId: this.props.productId, userId: this.props.userId }
     this.props.loadSpendingTable(args);
   }
 

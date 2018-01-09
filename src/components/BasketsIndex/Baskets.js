@@ -15,6 +15,7 @@ const Baskets = ({ page, desc, loaded, loadSpendingTable, newestDate, oldestDate
         newestDate={newestDate}
         unit={unit}
         loadSpendingTable={loadSpendingTable}
+        resourceName={resourceName}
       />
       <Panel default>
         <BasketsTable
