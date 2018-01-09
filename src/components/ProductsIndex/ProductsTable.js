@@ -2,7 +2,7 @@ import React from 'react';
 import ProductsTableRow from './ProductsTableRow';
 
 const ProductsTable = (props) => {
-  const products = props.tableData.map(product => <ProductsTableRow key={product.id} {...product} loadSpendingTable={props.loadSpendingTable} />);
+  const products = props.tableData.map(product => <ProductsTableRow key={product.id} {...product} loadSpendingTableAndChart={props.loadSpendingTableAndChart} />);
   return (
     <table className="table table-hover">
       <thead>

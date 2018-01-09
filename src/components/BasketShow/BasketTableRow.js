@@ -3,12 +3,12 @@ import NumberFormat from 'react-number-format';
 import { Link, withRouter } from 'react-router-dom';
 import TokenHelper from '../../api/TokenHelper';
 
-const BasketTableRow = withRouter(({ loadSpendingTable, history, info }) => {
+const BasketTableRow = withRouter(({ loadSpendingTableAndChart, history, info }) => {
   const productId = info.product_id;
   const userId = TokenHelper.userId('jwt');
   const updateProductStateAndLink = async (e) => {
     e.preventDefault();
-    await loadSpendingTable({ productId, userId, resourceName: 'product', desc: true });
+    await loadSpendingTableAndChart({ productId, userId, resourceName: 'product', desc: true });
     history.push(`/products/${productId}`);
   };
   return (

@@ -37,6 +37,8 @@ const MainPage = ({ loadBasket, loadProducts, loadSpendingTable, loadChart, load
                   ) : (
                     <Product
                       loadSpendingTable={loadSpendingTable}
+                      loadChart={loadChart}
+                      loadSpendingTableAndChart={loadSpendingTableAndChart}
                       match={match}
                       {...product}
                     />
@@ -48,7 +50,7 @@ const MainPage = ({ loadBasket, loadProducts, loadSpendingTable, loadChart, load
                 render={() => (
                   topState.authenticated === true ? (
                     <ProductsIndex
-                      loadSpendingTable={loadSpendingTable}
+                      loadSpendingTableAndChart={loadSpendingTableAndChart}
                       loadProducts={loadProducts}
                       {...products}
                     />
@@ -67,7 +69,7 @@ const MainPage = ({ loadBasket, loadProducts, loadSpendingTable, loadChart, load
                       {...basket}
                       match={match}
                       loadBasket={loadBasket}
-                      loadSpendingTable={loadSpendingTable}
+                      loadSpendingTableAndChart={loadSpendingTableAndChart}
                     />
                   )
                 )}

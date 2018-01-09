@@ -17,6 +17,7 @@ const Products = (props) => {
           desc={props.desc}
           loadProducts={props.loadProducts}
           loadSpendingTable={props.loadSpendingTable}
+          loadSpendingTableAndChart={props.loadSpendingTableAndChart}
         />
       </Panel>
       <Paginate

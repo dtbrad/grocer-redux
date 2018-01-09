@@ -8,7 +8,7 @@ const BasketsView = (props) => {
     <BasketTableRow
       key={li.id}
       info={li}
-      loadSpendingTable={props.loadSpendingTable}
+      loadSpendingTableAndChart={props.loadSpendingTableAndChart}
       loadBasket={props.loadBasket}
     />
   ));

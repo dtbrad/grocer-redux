@@ -4,15 +4,19 @@ import ProductTable from './ProductTable';
 import TokenHelper from '../../api/TokenHelper';
 import Paginate from '.././SharedComponents/Paginate';
 import SpendingFormContainer from '../SharedComponents/SpendingFormContainer';
+import ProductChart from './ProductChart';
 
-
-const Product = ({ page, totalPages, loadSpendingTable, oldestDate, newestDate, tableData, unit, desc, error, match, resourceName, sortCategory }) => {
+const Product = ({ loaded, page, chartData, totalPages, loadSpendingTable, loadChart, loadSpendingTableAndChart, oldestDate, newestDate, tableData, unit, desc, error, match, resourceName, sortCategory }) => {
+  if (loaded !== true) {
+    return <h4>Loading...</h4>;
+  }
   const productName = (tableData && tableData.length) ? tableData[0].product_name : null;
   const userId = TokenHelper.userId('jwt');
   const productId = match ? match.params.id : null;
-
+  const chart = chartData ? <ProductChart chartData={chartData} unit={unit} productName={productName} /> : null;
   return (
     <div>
+      { chart }
       <h5>{productName}</h5>
       <Panel default>
         <SpendingFormContainer
@@ -20,6 +24,8 @@ const Product = ({ page, totalPages, loadSpendingTable, oldestDate, newestDate, 
           newestDate={newestDate}
           unit={unit}
           loadSpendingTable={loadSpendingTable}
+          loadChart={loadChart}
+          loadSpendingTableAndChart={loadSpendingTableAndChart}
           resourceName={resourceName}
           productId={productId}
           userId={userId}

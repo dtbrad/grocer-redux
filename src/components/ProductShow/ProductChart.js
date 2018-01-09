@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactHighcharts from 'react-highcharts';
 
-const BasketsChart = (props) => {
+const ProductChart = (props) => {
   if (!props.chartData) {
     return (
       <div>Loading...</div>
@@ -9,7 +9,7 @@ const BasketsChart = (props) => {
   }
 
   const formattedData = props.chartData.map(x => (
-    [Date.parse(x[0]), x[1] / 100]
+    [Date.parse(x[0]), x[1]]
   ));
   const spendingTitle = `spending by ${props.unit}`;
   const properDateFormat = props.unit === 'month' ? '%B %Y' : '%B %d, %Y';
@@ -18,11 +18,11 @@ const BasketsChart = (props) => {
   const config = {
     chart: { type: 'spline' },
     title: {
-      text: 'Spending History',
+      text: `Purchasing History For ${props.productName}`,
     },
     yAxis: {
       title: {
-        text: 'Amount Spent ($)',
+        text: 'Qty',
       },
     },
     xAxis: { type: 'datetime' },
@@ -34,7 +34,7 @@ const BasketsChart = (props) => {
     tooltip: {
       formatter() {
         return (
-          `${properDateIntro} ${ReactHighcharts.Highcharts.dateFormat(properDateFormat, this.point.x)} - $${this.point.y}`
+          `${properDateIntro} ${ReactHighcharts.Highcharts.dateFormat(properDateFormat, this.point.x)} - purchased ${this.point.y} ${this.point.y > 1 ? 'times' : 'time'}`
         );
       },
     },
@@ -46,7 +46,6 @@ const BasketsChart = (props) => {
       <ReactHighcharts config={config} isPureConfig />
     </div>
   );
-}
+};
 
-
-export default BasketsChart;
+export default ProductChart;
