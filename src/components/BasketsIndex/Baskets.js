@@ -9,7 +9,7 @@ const Baskets = ({ chartData, page, desc, loaded, loadSpendingTable, loadChart, 
   if (loaded !== true) {
     return <h4>Loading...</h4>;
   }
-const chart = chartData ? <BasketsChart chartData={chartData} unit={unit} loadSpendingTableAndChart={loadSpendingTableAndChart} isPureConfig /> : null;
+const chart = chartData ? <BasketsChart chartData={chartData} unit={unit} loadSpendingTableAndChart={loadSpendingTableAndChart} isPureConfig /> : <div style={{ height: 400 }} />;
   return (
     <div>
       { chart }

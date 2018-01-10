@@ -9,7 +9,7 @@ import LogIn from './LogIn';
 import Welcome from './Welcome';
 import Navigation from './Navigation';
 
-const MainPage = ({ loadBasket, loadProducts, loadSpendingTable, loadChart, loadSpendingTableAndChart, logIn, logOut, topState }) => {
+const MainPage = ({ loadBasket, loadProductsTable, loadProductsTableAndChart, loadSpendingTable, loadChart, loadSpendingTableAndChart, logIn, logOut, topState }) => {
   const { authenticated, basket, baskets, product, products } = topState;
   const navigation = topState.authenticated ? (
     <Navigation authenticated={topState.authenticated} logOut={logOut} />
@@ -51,7 +51,8 @@ const MainPage = ({ loadBasket, loadProducts, loadSpendingTable, loadChart, load
                   topState.authenticated === true ? (
                     <ProductsIndex
                       loadSpendingTableAndChart={loadSpendingTableAndChart}
-                      loadProducts={loadProducts}
+                      loadProductsTableAndChart={loadProductsTableAndChart}
+                      loadProductsTable={loadProductsTable}
                       {...products}
                     />
                   ) : (

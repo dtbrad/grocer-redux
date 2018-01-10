@@ -1,6 +1,7 @@
 import React from 'react';
 import { Panel } from 'react-bootstrap';
 import ProductsTable from './ProductsTable';
+import ProductsChart from './ProductsChart';
 import TokenHelper from '../../api/TokenHelper';
 import Paginate from '../SharedComponents/Paginate';
 
@@ -9,22 +10,25 @@ const Products = (props) => {
     return <h4>Loading...</h4>;
   }
   const userId = TokenHelper.userId('jwt');
+
+  const chart = props.chartData ? <ProductsChart chartData={props.chartData} /> : <div style={{ height: 400 }} />;
   return (
     <div>
+      {chart}
       <Panel default>
         <ProductsTable
           tableData={props.tableData}
           desc={props.desc}
-          loadProducts={props.loadProducts}
-          loadSpendingTable={props.loadSpendingTable}
+          chartData={props.chartData}
+          loadProductsTable={props.loadProductsTable}
           loadSpendingTableAndChart={props.loadSpendingTableAndChart}
         />
       </Panel>
       <Paginate
-        loadProducts={props.loadProducts}
+        chartData={props.chartData}
         page={props.page}
         totalPages={props.totalPages}
-        loadResource={props.loadProducts}
+        loadResource={props.loadProductsTable}
         desc={props.desc}
         resourceName={props.resourceName}
         userId={userId}

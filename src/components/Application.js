@@ -28,7 +28,7 @@ class Application extends Component {
 
   loadBasketsAndProducts = async () => {
     await this.loadSpendingTableAndChart({ resourceName: 'baskets', desc: true, sortCategory: 'sort_date' });
-    this.loadProducts({ desc: false, sortCategory: 'sort_name', page: 1 });
+    this.loadProductsTableAndChart({ desc: false, sortCategory: 'sort_name', page: 1 });
   }
 
   logIn = async (token) => {
@@ -98,13 +98,14 @@ class Application extends Component {
     }
   }
 
-  loadProducts = async ({ desc, page, userId, sortCategory }) => {
+  loadProductsTable = async ({ desc, page, userId, sortCategory, chartData }) => {
     const response = await ProductService.getProducts({ desc, page, userId, sortCategory });
     if (response.status !== 200) {
       alert(`error: ${response.data.errors[0]} - try logging out and back in`);
       this.logOut();
     } else {
       const newState = {
+        chartData,
         page,
         desc,
         loaded: true,
@@ -114,6 +115,24 @@ class Application extends Component {
       };
       this.updateResource('products', newState);
     }
+  }
+
+  loadProductsChart = async () => {
+    const response = await ProductService.getIndexChart();
+    if (response.status !== 200) {
+      alert("error");
+      this.logOut();
+    } else {
+      TokenHelper.set('jwt', response.headers.jwt);
+      const newProductsState = this.state.products;
+      newProductsState.chartData = response.data
+      this.setState({ products: newProductsState });
+    }
+  }
+
+  loadProductsTableAndChart = async (args) => {
+    await this.loadProductsTable(args);
+    this.loadProductsChart();
   }
 
   updateResource = (resource, args) => {
@@ -130,7 +149,8 @@ class Application extends Component {
           loadChart={this.loadChart}
           loadSpendingTableAndChart={this.loadSpendingTableAndChart}
           loadBasket={this.loadBasket}
-          loadProducts={this.loadProducts}
+          loadProductsTable={this.loadProductsTable}
+          loadProductsTableAndChart={this.loadProductsTableAndChart}
           logIn={this.logIn}
           logOut={this.logOut}
           topState={this.state}

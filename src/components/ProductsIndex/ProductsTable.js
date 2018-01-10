@@ -9,27 +9,27 @@ const ProductsTable = (props) => {
         <tr style={{ color: '#07C' }}>
           <th
             role="button"
-            onClick={() => props.loadProducts({ page: 1, desc: !props.desc, sortCategory: 'sort_name' })}
+            onClick={() => props.loadProductsTable({ chartData: props.chartData, page: 1, desc: !props.desc, sortCategory: 'sort_name' })}
           > Name
           </th>
           <th
             role="button"
-            onClick={() => props.loadProducts({ page: 1, desc: !props.desc, sortCategory: 'sort_times_bought' })}
+            onClick={() => props.loadProductsTable({ chartData: props.chartData, page: 1, desc: !props.desc, sortCategory: 'sort_times_bought' })}
           > Total Purchased
           </th>
           <th
             role="button"
-            onClick={() => props.loadProducts({ page: 1, desc: !props.desc, sortCategory: 'sort_highest_price' })}
+            onClick={() => props.loadProductsTable({ chartData: props.chartData, page: 1, desc: !props.desc, sortCategory: 'sort_highest_price' })}
           > Highest Price
           </th>
           <th
             role="button"
-            onClick={() => props.loadProducts({ page: 1, desc: !props.desc, sortCategory: 'sort_lowest_price' })}
+            onClick={() => props.loadProductsTable({ chartData: props.chartData, page: 1, desc: !props.desc, sortCategory: 'sort_lowest_price' })}
           > Lowest Price
           </th>
           <th
             role="button"
-            onClick={() => props.loadProducts({ page: 1, desc: !props.desc, sortCategory: 'sort_most_recently_purchased' })}
+            onClick={() => props.loadProductsTable({ chartData: props.chartData, page: 1, desc: !props.desc, sortCategory: 'sort_most_recently_purchased' })}
           > Most Recently Purchased
           </th>
         </tr>
