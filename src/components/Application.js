@@ -47,6 +47,7 @@ class Application extends Component {
     const response = await fileService.getSpendingTable(args);
     if (response.status !== 200) {
       alert(`error: ${response.data.errors[0]} - try logging out and back in`);
+      this.logOut();
     } else {
       TokenHelper.set('jwt', response.headers.jwt);
       const newState = {
@@ -70,6 +71,7 @@ class Application extends Component {
     const response = await fileService.getChart(args);
     if (response.status === 400) {
       alert("error!");
+      this.logOut();
     } else {
       TokenHelper.set('jwt', response.headers.jwt);
       const newState = this.state[args.resourceName];
@@ -88,6 +90,7 @@ class Application extends Component {
     const response = await BasketService.getBasket({ basketId });
     if (response.status !== 200) {
       alert("error");
+      this.logOut();
     } else {
       TokenHelper.set('jwt', response.headers.jwt);
       const newState = response.data;
@@ -97,15 +100,20 @@ class Application extends Component {
 
   loadProducts = async ({ desc, page, userId, sortCategory }) => {
     const response = await ProductService.getProducts({ desc, page, userId, sortCategory });
-    const newState = {
-      page,
-      desc,
-      loaded: true,
-      tableData: response.data,
-      sortCategory,
-      totalPages: Math.ceil(response.headers.total / response.headers['per-page']),
-    };
-    this.updateResource('products', newState);
+    if (response.status !== 200) {
+      alert(`error: ${response.data.errors[0]} - try logging out and back in`);
+      this.logOut();
+    } else {
+      const newState = {
+        page,
+        desc,
+        loaded: true,
+        tableData: response.data,
+        sortCategory,
+        totalPages: Math.ceil(response.headers.total / response.headers['per-page']),
+      };
+      this.updateResource('products', newState);
+    }
   }
 
   updateResource = (resource, args) => {
