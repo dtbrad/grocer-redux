@@ -18,7 +18,6 @@ const Product = ({ loaded, page, chartData, totalPages, loadSpendingTable, loadC
   return (
     <div>
       { chart }
-      <h5>{productName}</h5>
       <Panel default>
         <SpendingFormContainer
           oldestDate={oldestDate}
