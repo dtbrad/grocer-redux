@@ -1,5 +1,5 @@
-import HttpClient from './http_client';
-import TokenHelper from '../auth/token_helper';
+import HttpClient from './HttpClient';
+import TokenHelper from './TokenHelper';
 
 class BasketService {
   static setHeaders() {
@@ -12,12 +12,12 @@ class BasketService {
     return null;
   }
 
-  static getBaskets(args) {
+  static getSpendingTable(args) {
     return this.getResponse('baskets', args);
   }
 
-  static getBasket(args) {
-    return this.getResponse(`baskets/${args.id}`, args);
+  static getBasket({ basketId }) {
+    return this.getResponse(`baskets/${basketId}`);
   }
 
   static getChart(args) {

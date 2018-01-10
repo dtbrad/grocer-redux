@@ -105,7 +105,7 @@ class SpendingHistoryControl extends React.Component {
             <DatePicker
               placeholderText="start date"
               selected={this.state.oldest_date}
-              onChange={this.setOldest}
+              onChange={props.setOldest}
               className="datepicker form-control"
               showYearDropdown
             />

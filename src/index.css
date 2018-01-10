@@ -16,16 +16,17 @@ footer {
     width: 100%;
 }
 
-.navbar, .navbar-default, .container-fluid {
-  border: none;
-  background-color: white;
-  box-shadow: none
+.navbar-default .navbar-nav > .disabled > a, .navbar-default .navbar-nav > .disabled > a:hover, .navbar-default .navbar-nav > .disabled > a:focus {
+    color: brown;
 }
 
-a {
-  padding: 5px
+.form-control {
+  width: 100% !important;
 }
 
+.form-group {
+  width: 100%;
+}
 
 .btn:focus {
   outline: none;

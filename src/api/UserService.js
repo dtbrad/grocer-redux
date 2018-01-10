@@ -1,6 +1,6 @@
-import HttpClient from './http_client';
+import HttpClient from './HttpClient';
 
-class UsersService {
+class UserService {
   static async loginUser(args) {
     try {
       const response = await HttpClient.post('login', args);
@@ -15,4 +15,4 @@ class UsersService {
   }
 }
 
-export default UsersService;
+export default UserService;

@@ -1,5 +1,5 @@
-import HttpClient from './http_client';
-import TokenHelper from '../auth/token_helper';
+import HttpClient from './HttpClient';
+import TokenHelper from './TokenHelper';
 
 class ProductService {
   static setHeaders() {
@@ -16,7 +16,7 @@ class ProductService {
     return this.getResponse('products', args);
   }
 
-  static getProduct(args) {
+  static getSpendingTable(args) {
     return this.getResponse(`products/${args.id}`, args);
   }
 
