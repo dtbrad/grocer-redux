@@ -5,8 +5,8 @@ import SpendingFormView from './SpendingFormView';
 
 class SpendingFormContainer extends Component {
   state = {
-    oldestDate: moment(this.props.oldestDate),
-    newestDate: moment(this.props.newestDate),
+    oldestDate: moment(this.props.oldestDate, "YYYY-MM-DD HH:mm"),
+    newestDate: moment(this.props.newestDate, "YYYY-MM-DD HH:mm"),
     unit: this.props.unit || 'month',
     outOfOrder: null,
     wrongUnit: null,
@@ -14,8 +14,8 @@ class SpendingFormContainer extends Component {
 
   componentWillReceiveProps = (nextProps) => {
     this.setState({
-      oldestDate: moment(nextProps.oldestDate),
-      newestDate: moment(nextProps.newestDate),
+      oldestDate: moment(nextProps.oldestDate, "YYYY-MM-DD HH:mm"),
+      newestDate: moment(nextProps.newestDate, "YYYY-MM-DD HH:mm"),
       unit: nextProps.unit || 'month',
     });
   }
