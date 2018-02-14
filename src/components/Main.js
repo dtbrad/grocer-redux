@@ -8,6 +8,7 @@ import Basket from './BasketShow/Basket';
 import LogIn from './LogIn';
 import Welcome from './Welcome';
 import Navigation from './Navigation';
+import ItemsContainer from '../containers/ItemsContainer';
 
 const MainPage = ({ loadBasket, loadProductsTable, loadProductsTableAndChart, loadSpendingTable, loadChart, loadSpendingTableAndChart, logIn, logOut, topState }) => {
   const { authenticated, basket, baskets, product, products } = topState;
@@ -60,6 +61,7 @@ const MainPage = ({ loadBasket, loadProductsTable, loadProductsTableAndChart, lo
                   )
                 )}
               />
+              <Route path="/items" component={ItemsContainer} />
               <Route
                 path="/shopping_trips/:id"
                 render={({ match }) => (
